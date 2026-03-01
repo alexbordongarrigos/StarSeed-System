@@ -177,7 +177,7 @@ export function PositioningTab({ state, dispatch }: Props) {
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent className="bg-slate-900 border-white/10 text-white">
-                                <SelectItem value="standard">Standard (Dialog > Popover > Toast)</SelectItem>
+                                <SelectItem value="standard">Standard (Dialog &gt; Popover &gt; Toast)</SelectItem>
                                 <SelectItem value="flat">Flat (Minimal layering)</SelectItem>
                                 <SelectItem value="deep">Deep (Complex hierarchy)</SelectItem>
                             </SelectContent>

@@ -41,12 +41,12 @@ export function LiquidButton({ className, children, liquidConfig, ...props }: Li
                 className="rounded-full overflow-hidden" // Pill shape like repo
             >
                 {/* Background glow for 3D effect */}
-                <div className="absolute inset-0 bg-white/5 opacity-50 z-0 pointer-events-none mix-blend-overlay" />
+                <div className="absolute inset-0 bg-foreground/5 opacity-50 z-0 pointer-events-none mix-blend-overlay" />
 
                 <Button
                     {...props}
                     className={cn(
-                        "relative z-10 bg-transparent hover:bg-transparent shadow-none border-0 text-white font-semibold tracking-wide backdrop-blur-none",
+                        "relative z-10 bg-transparent hover:bg-transparent shadow-none border-0 text-foreground font-semibold tracking-wide backdrop-blur-none",
                         className
                     )}
                     style={glassStyle}

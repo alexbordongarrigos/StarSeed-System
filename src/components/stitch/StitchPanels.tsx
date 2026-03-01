@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { Activity, Wifi, Cpu, Layers, Maximize2, X, Database } from 'lucide-react';
 
 interface StitchPanelProps {
-    theme: "liquid" | "organic";
+    theme: "liquid" | "organic" | "liquid-crystal";
     className?: string;
     styleConfig?: {
         borderColor?: string;
@@ -37,9 +37,9 @@ export const StitchSystemPanel: React.FC<StitchPanelProps> = ({ theme, className
         <div
             className={cn(
                 "relative p-4 overflow-hidden group",
-                !styleConfig && (isLiquid
-                    ? "bg-slate-900/60 border border-cyan-500/30 rounded-lg backdrop-blur-md"
-                    : "bg-emerald-950/40 border border-emerald-500/20 rounded-2xl backdrop-blur-sm"),
+                !styleConfig && isLiquid && "bg-slate-900/60 border border-cyan-500/30 rounded-lg backdrop-blur-md",
+                !styleConfig && theme === "liquid-crystal" && "crystal-panel rounded-2xl",
+                !styleConfig && theme === "organic" && "bg-emerald-950/40 border border-emerald-500/20 rounded-2xl backdrop-blur-sm",
                 className
             )}
             style={dynamicStyle}
@@ -49,7 +49,7 @@ export const StitchSystemPanel: React.FC<StitchPanelProps> = ({ theme, className
             <div className="space-y-4">
                 <div className="flex items-center justify-between mb-4">
                     <span className="text-xs font-mono opacity-50 uppercase tracking-widest">System Status</span>
-                    <div className={cn("w-2 h-2 rounded-full animate-pulse", isLiquid ? "bg-cyan-400" : "bg-emerald-400")} />
+                    <div className={cn("w-2 h-2 rounded-full animate-pulse", isLiquid && "bg-cyan-400", theme === "liquid-crystal" && "bg-white", theme === "organic" && "bg-emerald-400")} />
                 </div>
 
                 <div className="space-y-3">
@@ -89,9 +89,9 @@ export const StitchWidgetPanel: React.FC<StitchPanelProps> = ({ theme, className
         <div
             className={cn(
                 "relative p-3 grid grid-cols-2 gap-2",
-                !styleConfig && (isLiquid
-                    ? "bg-slate-900/60 border border-cyan-500/30 rounded-lg backdrop-blur-md"
-                    : "bg-emerald-950/40 border border-emerald-500/20 rounded-2xl backdrop-blur-sm"),
+                !styleConfig && isLiquid && "bg-slate-900/60 border border-cyan-500/30 rounded-lg backdrop-blur-md",
+                !styleConfig && theme === "liquid-crystal" && "crystal-panel rounded-2xl",
+                !styleConfig && theme === "organic" && "bg-emerald-950/40 border border-emerald-500/20 rounded-2xl backdrop-blur-sm",
                 className
             )}
             style={dynamicStyle}
@@ -105,7 +105,7 @@ export const StitchWidgetPanel: React.FC<StitchPanelProps> = ({ theme, className
 
 // --- Helpers ---
 
-const MetricBar: React.FC<{ label: string; value: number; theme: 'liquid' | 'organic' }> = ({ label, value, theme }) => {
+const MetricBar: React.FC<{ label: string; value: number; theme: 'liquid' | 'organic' | 'liquid-crystal' }> = ({ label, value, theme }) => {
     const isLiquid = theme === 'liquid';
 
     return (
@@ -116,12 +116,16 @@ const MetricBar: React.FC<{ label: string; value: number; theme: 'liquid' | 'org
             </div>
             <div className={cn(
                 "h-1.5 w-full overflow-hidden",
-                isLiquid ? "bg-slate-800 rounded-sm" : "bg-emerald-900/30 rounded-full"
+                isLiquid && "bg-slate-800 rounded-sm",
+                theme === "liquid-crystal" && "bg-white/10 rounded-full",
+                theme === "organic" && "bg-emerald-900/30 rounded-full"
             )}>
                 <motion.div
                     className={cn(
                         "h-full",
-                        isLiquid ? "bg-cyan-500" : "bg-emerald-500"
+                        isLiquid && "bg-cyan-500",
+                        theme === "liquid-crystal" && "bg-white",
+                        theme === "organic" && "bg-emerald-500"
                     )}
                     initial={{ width: 0 }}
                     animate={{ width: `${value}%` }}
@@ -132,21 +136,22 @@ const MetricBar: React.FC<{ label: string; value: number; theme: 'liquid' | 'org
     );
 };
 
-const WidgetCard: React.FC<{ theme: 'liquid' | 'organic'; title: string; icon: any }> = ({ theme, title, icon: Icon }) => {
+const WidgetCard: React.FC<{ theme: 'liquid' | 'organic' | 'liquid-crystal'; title: string; icon: any; className?: string }> = ({ theme, title, icon: Icon, className }) => {
     const isLiquid = theme === 'liquid';
 
     return (
         <motion.button
             className={cn(
                 "flex flex-col items-center justify-center p-2 gap-1 transition-all",
-                isLiquid
-                    ? "bg-cyan-500/5 hover:bg-cyan-500/10 border border-cyan-500/20 rounded hover:border-cyan-500/50"
-                    : "bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/10 rounded-xl hover:border-emerald-500/40"
+                isLiquid && "bg-cyan-500/5 hover:bg-cyan-500/10 border border-cyan-500/20 rounded hover:border-cyan-500/50",
+                theme === "liquid-crystal" && "bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl hover:border-white/30 backdrop-blur-sm",
+                theme === "organic" && "bg-emerald-500/5 hover:bg-emerald-500/10 border border-emerald-500/10 rounded-xl hover:border-emerald-500/40",
+                className
             )}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
         >
-            <Icon size={16} className={isLiquid ? "text-cyan-400" : "text-emerald-400"} />
+            <Icon size={16} className={cn(isLiquid && "text-cyan-400", theme === "liquid-crystal" && "text-white/80", theme === "organic" && "text-emerald-400")} />
             <span className="text-[9px] opacity-60">{title}</span>
         </motion.button>
     );

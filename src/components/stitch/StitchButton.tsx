@@ -4,7 +4,7 @@ import { motion, HTMLMotionProps } from "framer-motion";
 
 interface StitchButtonProps extends Omit<HTMLMotionProps<"button">, "ref"> {
     variant?: "primary" | "secondary" | "ghost";
-    theme?: "default" | "liquid" | "organic" | "glass" | "neon" | "brutal";
+    theme?: "default" | "liquid" | "liquid-crystal" | "organic" | "glass" | "neon" | "brutal";
     size?: "sm" | "md" | "lg" | "xl";
     glow?: boolean;
     styleConfig?: {
@@ -48,6 +48,12 @@ export function StitchButton({
         const secondary = styleConfig?.secondaryColor || "#3B82F6";
         const blur = styleConfig?.blur ?? 12;
 
+        if (theme === "liquid-crystal") {
+            return cn(
+                "crystal-button",
+                glow && "hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]"
+            );
+        }
         if (theme === "liquid") {
             return cn(
                 "text-white shadow-xl group/liquid",
@@ -115,7 +121,7 @@ export function StitchButton({
             {...(props as any)}
         >
             {/* Liquid Background Effect */}
-            {theme === "liquid" && (
+            {(theme === "liquid" || theme === "liquid-crystal") && (
                 <>
                     <motion.div
                         className="absolute inset-0 bg-gradient-to-br from-cyan-500/20 via-purple-500/20 to-rose-500/20 opacity-40"

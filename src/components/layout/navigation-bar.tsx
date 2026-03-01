@@ -11,6 +11,8 @@ import {
     Library,
     Settings,
     User,
+    Compass,
+    Globe,
 } from "lucide-react";
 import { Logo } from "../logo";
 import { cn } from "@/lib/utils";
@@ -21,48 +23,80 @@ export function NavigationBar({ position = "top" }: { position?: "top" | "bottom
 
     return (
         <div className={cn(
-            "flex items-center justify-between bg-background/80 backdrop-blur-xl px-6 py-2 border-b",
+            "flex items-center justify-between backdrop-blur-xl border-b liquid-glass-panel shadow-sm transition-all duration-300",
             position === "bottom" && "border-t border-b-0 order-last"
-        )}>
-            <div className="flex items-center gap-6">
-                <Link href="/" className="flex items-center gap-2 font-semibold">
+        )}
+            style={{ paddingInline: 'clamp(0.75rem,2vw,1.75rem)', paddingBlock: 'clamp(0.25rem,0.5vw,0.5rem)' }}
+        >
+            {/* Left — Logo + Brand */}
+            <div className="flex items-center gap-3 flex-shrink-0">
+                <Link href="/" className="flex items-center gap-2 font-semibold group">
                     <Logo />
-                    <span className="hidden md:inline-block">StarSeed</span>
+                    <span className="hidden md:inline-block text-sm font-bold tracking-wide bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+                        StarSeed
+                    </span>
                 </Link>
-
-                <nav className="hidden md:flex items-center gap-1">
-                    <NavItem href="/dashboard" icon={Home}>Dashboard</NavItem>
-                    <NavItem href="/network" icon={Network}>Red</NavItem>
-                    <NavItem href="/agent" icon={Bot}>Agente</NavItem>
-                    <NavItem href="/hub" icon={Users}>Hub</NavItem>
-                </nav>
             </div>
 
-            <div className="flex items-center gap-1">
-                <NavItem href="/publish" icon={PenSquare} labelOnly />
-                <NavItem href="/messages" icon={MessageSquare} labelOnly />
-                <NavItem href="/settings" icon={Settings} labelOnly />
-                <NavItem href="/profile/starseeduser" icon={User} labelOnly />
+            {/* Center — Primary Nav (fully centered) */}
+            <nav className="hidden md:flex items-center gap-0.5 absolute left-1/2 -translate-x-1/2">
+                <NavItem href="/dashboard" icon={Home}>Dashboard</NavItem>
+                <NavItem href="/network" icon={Network}>Red</NavItem>
+                <NavItem href="/agent" icon={Bot}>Agente</NavItem>
+                <NavItem href="/hub" icon={Users}>Hub</NavItem>
+                <NavItem href="/explorer" icon={Compass}>Explorar</NavItem>
+            </nav>
+
+            {/* Right — Actions */}
+            <div className="flex items-center gap-0.5 flex-shrink-0">
+                <NavItem href="/publish" icon={PenSquare} labelOnly title="Publicar" />
+                <NavItem href="/messages" icon={MessageSquare} labelOnly title="Mensajes" />
+                <NavItem href="/settings" icon={Settings} labelOnly title="Ajustes" />
+                <NavItem href="/profile/starseeduser" icon={User} labelOnly title="Perfil" />
             </div>
         </div>
     );
 }
 
-function NavItem({ href, children, icon: Icon, labelOnly = false }: { href: string; children?: React.ReactNode, icon?: any, labelOnly?: boolean }) {
+function NavItem({
+    href,
+    children,
+    icon: Icon,
+    labelOnly = false,
+    title,
+}: {
+    href: string;
+    children?: React.ReactNode;
+    icon?: React.ComponentType<{ className?: string }>;
+    labelOnly?: boolean;
+    title?: string;
+}) {
     const pathname = usePathname();
-    const isActive = pathname.startsWith(href);
+    const isActive = pathname === href || pathname.startsWith(href + "/");
 
     return (
         <Link
             href={href}
+            title={title}
             className={cn(
-                "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-primary",
-                isActive ? "bg-muted text-primary" : "text-muted-foreground"
+                "relative flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-medium transition-all duration-200",
+                "hover:bg-primary/10 hover:text-primary",
+                isActive
+                    ? "bg-primary/15 text-primary shadow-[inset_0_0_12px_rgba(139,92,246,0.1)]"
+                    : "text-muted-foreground",
+                labelOnly && "px-2.5"
             )}
-            title={labelOnly && typeof children === 'string' ? children : undefined}
         >
-            {Icon && <Icon className="h-4 w-4" />}
-            {!labelOnly && children}
+            {Icon && <Icon className={cn("h-[1.05rem] w-[1.05rem] flex-shrink-0", isActive && "text-primary")} />}
+            {!labelOnly && (
+                <span style={{ fontSize: 'clamp(0.75rem,0.7vw,0.875rem)' }}>
+                    {children}
+                </span>
+            )}
+            {/* Active underline dot */}
+            {isActive && (
+                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-primary opacity-70" />
+            )}
         </Link>
     );
 }

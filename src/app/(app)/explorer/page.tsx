@@ -19,7 +19,8 @@ import {
     Download,
     Bot,
     Filter,
-    BrainCircuit
+    BrainCircuit,
+    Compass
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -55,42 +56,17 @@ interface SearchResult {
 // --- Mock Data ---
 
 const mockResults: SearchResult[] = [
-    {
-        id: "1",
-        title: "Propuesta de Holocracia Cuántica",
-        description: "Un marco de gobernanza descentralizada basado en nodos fractales.",
-        type: "DOC",
-        domain: "POLITICS",
-        relevance: 98,
-        tags: ["governance", "web3", "democracy"]
-    },
-    {
-        id: "2",
-        title: "Curso: Historia del Futuro",
-        description: "Módulo educativo interactivo sobre la evolución transhumanista.",
-        type: "COURSE",
-        domain: "EDUCATION",
-        relevance: 95,
-        tags: ["history", "transhumanism"]
-    },
-    {
-        id: "3",
-        title: "Pack de Texturas Biomecánicas",
-        description: "Assets 3D de alta resolución para entornos virtuales.",
-        type: "ASSET",
-        domain: "CULTURE",
-        relevance: 88,
-        tags: ["3d", "art", "creative"]
-    },
-    {
-        id: "4",
-        title: "Monitor de Red Neural",
-        description: "Herramienta de diagnóstico para nodos StarSeed.",
-        type: "APP",
-        domain: "SYSTEM",
-        relevance: 92,
-        tags: ["dev", "network", "tool"]
-    },
+    { id: "1", title: "Propuesta de Holocracia Cuántica", description: "Un marco de gobernanza descentralizada basado en nodos fractales y contratos inteligentes ontocráticos.", type: "DOC", domain: "POLITICS", relevance: 98, tags: ["governance", "web3", "democracy"] },
+    { id: "2", title: "Curso: Historia del Futuro", description: "Módulo educativo interactivo sobre la evolución transhumanista y paradigmas postcapitalistas.", type: "COURSE", domain: "EDUCATION", relevance: 95, tags: ["history", "transhumanism"] },
+    { id: "3", title: "Pack de Texturas Biomecánicas v2", description: "Assets 3D de alta resolución con superficies orgánico-tecnológicas para entornos virtuales inmersivos.", type: "ASSET", domain: "CULTURE", relevance: 88, tags: ["3d", "art", "creative"] },
+    { id: "4", title: "Monitor de Red Neural StarSeed", description: "Herramienta de diagnóstico en tiempo real para analizar la salud y sincronía de los nodos de la red.", type: "APP", domain: "SYSTEM", relevance: 92, tags: ["dev", "network", "tool"] },
+    { id: "5", title: "Manifiesto Ontocrático v3.1", description: "Documento fundacional que define los principios de mérito, transparencia y gobernanza descentralizada de StarSeed.", type: "DOC", domain: "POLITICS", relevance: 97, tags: ["ontocracy", "manifesto", "governance"] },
+    { id: "6", title: "Física Cuántica Aplicada: Guía Avanzada", description: "Tratado completo sobre entrelazamiento cuántico, no-localidad y sus implicaciones para sistemas conscientes.", type: "ARTICLE", domain: "EDUCATION", relevance: 91, tags: ["quantum", "physics", "consciousness"] },
+    { id: "7", title: "Colección Musical: Frequencies 001", description: "Álbum de 12 pistas generadas algorítmicamente con frecuencias de resonancia binaural para estados elevados.", type: "AUDIO", domain: "CULTURE", relevance: 84, tags: ["music", "binaural", "generative"] },
+    { id: "8", title: "API: Exocortex Personal v0.9", description: "Interfaz para conectar agentes IA personales con el grafo de conocimiento colectivo de StarSeed.", type: "APP", domain: "SYSTEM", relevance: 89, tags: ["api", "ai", "exocortex"] },
+    { id: "9", title: "Curso: Permacultura Digital Regenerativa", description: "Aplicación de principios de permacultura al diseño de sistemas digitales sostenibles y comunidades en red.", type: "COURSE", domain: "EDUCATION", relevance: 86, tags: ["permaculture", "ecology", "systems"] },
+    { id: "10", title: "Exposición: Geometría Sagrada Generativa", description: "40 obras de arte generativo basadas en patrones de la naturaleza con código fuente abierto para replicar.", type: "ASSET", domain: "CULTURE", relevance: 80, tags: ["sacred-geometry", "generative", "open-source"] },
+    { id: "11", title: "Constitución de Seeds: Economía Libre", description: "Protocolo económico basado en contribución real, con mecanismos anti-acumulación y flujo libre de recursos en la red.", type: "DOC", domain: "POLITICS", relevance: 94, tags: ["economy", "seeds", "anti-monopoly"] },
 ];
 
 export default function ExplorerPage() {
@@ -115,22 +91,30 @@ export default function ExplorerPage() {
     );
 
     return (
-        <div className="flex flex-col min-h-screen pb-20 p-4 md:p-8 max-w-[1200px] mx-auto gap-12">
+        <div className="flex flex-col min-h-screen pb-20 px-[clamp(0.75rem,2vw,2rem)] py-[clamp(0.75rem,1.5vw,1.5rem)] max-w-[1200px] mx-auto gap-[clamp(1.5rem,3vw,3rem)]">
 
             {/* --- HERO SECTION: Neural Search --- */}
-            <div className="flex flex-col items-center justify-center gap-8 mt-10 md:mt-20">
+            <div className="flex flex-col items-center justify-center gap-[clamp(1rem,2vw,2rem)] mt-[clamp(1.5rem,4vw,5rem)]">
 
-                <div className="text-center space-y-4">
-                    <h1 className="text-5xl md:text-7xl font-bold font-headline text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+                <div className="text-center space-y-[clamp(0.25rem,0.75vw,1rem)] relative z-10 max-w-2xl">
+                    <div className="flex items-center justify-center gap-3 mb-2">
+                        <div className="p-2.5 rounded-2xl bg-primary/20 text-primary backdrop-blur-md">
+                            <Compass className="w-8 h-8" />
+                        </div>
+                        <Badge variant="outline" className="border-primary/30 text-primary/80 tracking-widest uppercase text-[10px] font-semibold">
+                            Red Global
+                        </Badge>
+                    </div>
+                    <h1 className="page-title font-headline text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40 filter drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
                         Explorador Universal
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                        Accede a la inteligencia colectiva de la red. Busca conceptos, programas y recursos en cualquier dimensión.
+                    <p className="page-subtitle text-muted-foreground mx-auto">
+                        Navega por el conocimiento colectivo, perfiles destacados, y herramientas del ecosistema.
                     </p>
                 </div>
 
                 {/* Neural Input Interface */}
-                <div className="w-full max-w-3xl relative z-10">
+                <div className="w-full max-w-3xl relative z-10 mt-6">
                     {/* Context/Agent Ring */}
                     <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/60 backdrop-blur-md border border-primary/30 px-4 py-1.5 rounded-full flex items-center gap-2 text-xs font-medium text-primary shadow-[0_0_15px_rgba(56,189,248,0.2)]">
                         <Bot className="w-3 h-3" />
@@ -148,56 +132,60 @@ export default function ExplorerPage() {
                         </Select>
                     </div>
 
-                    <div className={cn(
-                        "relative group transition-all duration-500",
-                        isSearching ? "scale-[1.02]" : "hover:scale-[1.01]"
-                    )}>
-                        <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-purple-500 to-indigo-500 rounded-full opacity-30 group-hover:opacity-60 blur-md transition-opacity duration-500 animate-pulse" />
-                        <div className="relative flex items-center bg-black/80 backdrop-blur-xl border border-white/10 rounded-full p-2 shadow-2xl">
-                            <Search className="w-6 h-6 text-muted-foreground ml-4" />
+                    {/* Search Controls */}
+                    <div className="flex flex-col md:flex-row gap-4 relative z-20">
+                        <div className="flex-1 relative group">
+                            <div className="absolute inset-0 bg-primary/20 blur-xl opacity-0 group-focus-within:opacity-100 transition-opacity rounded-xl pointer-events-none" />
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5 group-focus-within:text-primary transition-colors" />
                             <Input
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
+                                placeholder="Busca nodos, artículos, herramientas o personas..."
+                                className="w-full pl-12 pr-12 h-14 text-base backdrop-blur-xl bg-background/40 border-primary/20 focus-visible:border-primary/50 focus-visible:ring-1 focus-visible:ring-primary/30"
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                                placeholder="Busca cualquier concepto, red o archivo..."
-                                className="flex-1 border-0 bg-transparent text-lg h-14 focus-visible:ring-0 placeholder:text-muted-foreground/50"
                             />
-                            <Button size="icon" variant="ghost" className="h-10 w-10 rounded-full hover:bg-white/10 text-muted-foreground hover:text-primary"><Mic className="w-5 h-5" /></Button>
-                            <Button onClick={handleSearch} size="lg" className="rounded-full px-8 bg-white/10 hover:bg-white/20 text-white border border-white/5 ml-2">
-                                {isSearching ? <Sparkles className="w-4 h-4 animate-spin" /> : "Explorar"}
+                            <Button
+                                size="icon"
+                                variant="ghost"
+                                className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary btn-pill"
+                            >
+                                <Mic className="w-5 h-5" />
                             </Button>
                         </div>
+                        <Button onClick={handleSearch} size="lg" className="h-14 px-8 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg transition-all duration-300">
+                            {isSearching ? <Sparkles className="w-5 h-5 animate-spin" /> : "Explorar"}
+                        </Button>
                     </div>
-                </div>
-
-                {/* Domain Scopes */}
-                <div className="flex flex-wrap justify-center gap-2 md:gap-4">
-                    {[
-                        { id: 'ALL', label: 'Todo', icon: Globe },
-                        { id: 'POLITICS', label: 'Política', icon: Users },
-                        { id: 'EDUCATION', label: 'Educación', icon: BookOpen },
-                        { id: 'CULTURE', label: 'Cultura', icon: Palette },
-                        { id: 'SYSTEM', label: 'Sistema', icon: Cpu },
-                    ].map((scope) => (
-                        <button
-                            key={scope.id}
-                            onClick={() => setActiveDomain(scope.id as Domain)}
-                            className={cn(
-                                "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border border-transparent",
-                                activeDomain === scope.id
-                                    ? "bg-white/10 text-white border-white/20 shadow-lg scale-105"
-                                    : "text-muted-foreground hover:text-white hover:bg-white/5"
-                            )}
-                        >
-                            <scope.icon className="w-4 h-4" />
-                            {scope.label}
-                        </button>
-                    ))}
                 </div>
             </div>
 
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap justify-center gap-2 md:gap-4 px-4">
+                {[
+                    { id: 'ALL', label: 'Todo', icon: Globe },
+                    { id: 'POLITICS', label: 'Política', icon: Users },
+                    { id: 'EDUCATION', label: 'Educación', icon: BookOpen },
+                    { id: 'CULTURE', label: 'Cultura', icon: Palette },
+                    { id: 'SYSTEM', label: 'Sistema', icon: Cpu },
+                ].map((scope) => (
+                    <button
+                        key={scope.id}
+                        onClick={() => setActiveDomain(scope.id as Domain)}
+                        className={cn(
+                            "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 border",
+                            activeDomain === scope.id
+                                ? "bg-primary text-primary-foreground border-primary shadow-lg scale-105"
+                                : "bg-background/30 text-muted-foreground border-white/10 hover:text-white hover:bg-white/5"
+                        )}
+                    >
+                        <scope.icon className="w-4 h-4" />
+                        {scope.label}
+                    </button>
+                ))}
+            </div>
+
             {/* --- RESULTS MATRIX --- */}
-            <div className="space-y-6">
+            <div className="space-y-6 px-[clamp(0.75rem,2vw,2rem)]">
                 <div className="flex items-center justify-between text-sm text-muted-foreground border-b border-white/5 pb-2">
                     <span>Resultados ({filteredResults.length})</span>
                     <div className="flex items-center gap-2 cursor-pointer hover:text-white"><Filter className="w-3 h-3" /> Filtros Avanzados</div>

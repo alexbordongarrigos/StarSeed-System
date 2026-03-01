@@ -29,7 +29,7 @@ export function LiquidCard({ className, children, liquidConfig, ...props }: Liqu
             <div
                 {...props}
                 className={cn(
-                    "relative z-10 p-6 bg-white/5 border border-white/20 text-white backdrop-blur-none",
+                    "relative z-10 p-6 bg-foreground/5 border border-foreground/20 text-foreground backdrop-blur-none",
                     "transition-transform duration-500 ease-out hover:scale-[1.02]",
                     className
                 )}

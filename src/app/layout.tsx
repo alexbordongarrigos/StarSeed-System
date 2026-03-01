@@ -8,6 +8,7 @@ import { AppearanceProvider } from "@/context/appearance-context";
 import { cn } from "@/lib/utils";
 import { LiquidGlass } from "@/components/ui/liquid-glass";
 import { WebGLBackground } from "@/components/ui/backgrounds/webgl-background";
+import { SplineDefaultBackground } from "@/components/ui/backgrounds/spline-default-background";
 import { CrystalFilters } from "@/components/ui/effects/CrystalFilters";
 import { GlobalEnvironment } from "@/components/ui/global-environment";
 import { PerimeterProvider } from "@/context/perimeter-context";
@@ -84,6 +85,7 @@ export default function RootLayout({
                     <PerimeterProvider>
                       <LiquidGlass />
                       <WebGLBackground />
+                      <SplineDefaultBackground />
                       <CrystalFilters />
                       <GlobalEnvironment />
                       {children}

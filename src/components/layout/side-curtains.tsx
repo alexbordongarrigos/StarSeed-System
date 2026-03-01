@@ -77,7 +77,7 @@ export function SideCurtains() {
                     exit={{ x: "-100%", y: "-50%", opacity: 0, scale: 0.95 }}
                     transition={{ type: "spring", damping: 30, stiffness: 200 }}
                     style={{ top: "50%" }} // Force vertical position
-                    className="fixed left-4 h-auto max-h-[90vh] w-[350px] md:w-[450px] z-[90] pointer-events-auto rounded-3xl overflow-hidden shadow-2xl border border-emerald-500/30 flex flex-col"
+                    className="fixed left-4 h-auto max-h-[90vh] w-[350px] md:w-[500px] z-[90] pointer-events-auto rounded-[2rem] overflow-hidden shadow-2xl border border-emerald-500/30 flex flex-col"
                 >
                     {/* Glass/Color Background - Contained */}
                     <div className="absolute inset-0 bg-black/80 backdrop-blur-xl" />
@@ -85,106 +85,111 @@ export function SideCurtains() {
                     {/* Emerald Accent Gradient */}
                     <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/50 to-transparent pointer-events-none" />
 
-                    <div className="relative z-10 w-full flex-1 flex flex-col p-8 text-emerald-50 overflow-y-auto custom-scrollbar">
+                    <div className="relative z-10 w-full flex-1 flex flex-col p-6 md:p-10 text-emerald-50 overflow-y-auto custom-scrollbar">
                         {/* Header */}
-                        <div className="flex items-center gap-3 mb-8 flex-shrink-0">
-                            <div className="p-3 rounded-full bg-emerald-500/20 border border-emerald-400/30 shadow-[0_0_15px_rgba(16,185,129,0.4)]">
-                                <Copy className="w-6 h-6 text-emerald-300" />
+                        <div className="flex flex-col items-center text-center gap-4 mb-10 flex-shrink-0">
+                            <div className="p-4 rounded-full bg-emerald-500/20 border border-emerald-400/30 shadow-[0_0_25px_rgba(16,185,129,0.5)]">
+                                <Copy className="w-8 h-8 text-emerald-300" />
                             </div>
                             <div>
-                                <h2 className="text-xl font-light tracking-widest uppercase font-headline">
+                                <h2 className="text-2xl md:text-3xl font-light tracking-widest uppercase font-headline">
                                     Centro de Creación
                                 </h2>
-                                <p className="text-[10px] text-emerald-400/60 font-mono">UNIVERSAL CANVAS HUB</p>
+                                <p className="text-xs text-emerald-400/60 font-mono mt-1">UNIVERSAL CANVAS HUB</p>
                             </div>
                         </div>
 
                         {/* Universal Creation Canvas Access */}
-                        <div className="mb-8 flex-shrink-0">
+                        <div className="mb-10 flex-shrink-0 px-2">
                             <Button
-                                className="w-full h-auto py-4 flex flex-col items-center gap-2 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 border border-emerald-500/30 hover:border-emerald-400/60 hover:from-emerald-500/30 hover:to-teal-600/30 transition-all group"
+                                className="w-full h-auto py-6 rounded-3xl flex flex-col items-center gap-3 bg-gradient-to-br from-emerald-500/20 to-teal-600/20 border border-emerald-500/30 hover:border-emerald-400/60 hover:from-emerald-500/30 hover:to-teal-600/30 transition-all group shadow-lg"
                                 onClick={() => setActiveBoard(null)} // Or route to a dedicated canvas page
                             >
-                                <div className="p-2 rounded-full bg-emerald-400/20 group-hover:scale-110 transition-transform">
-                                    <Sparkles className="w-6 h-6 text-emerald-300" />
+                                <div className="p-3 rounded-full bg-emerald-400/20 group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(16,185,129,0.3)]">
+                                    <Sparkles className="w-8 h-8 text-emerald-300" />
                                 </div>
                                 <div className="text-center">
-                                    <span className="block text-lg font-light tracking-wider text-emerald-100">Lienzo Universal</span>
-                                    <span className="text-xs text-emerald-200/60 font-light">Espacio de creación libre para cualquier contexto</span>
+                                    <span className="block text-xl font-light tracking-wider text-emerald-100 mb-1">Lienzo Universal</span>
+                                    <span className="text-sm text-emerald-200/60 font-light px-4 whitespace-normal">Espacio de creación libre para cualquier contexto y disciplina.</span>
                                 </div>
                             </Button>
                         </div>
 
                         {/* Tools Grid / Active Boards */}
-                        <div className="flex-1 space-y-8">
+                        <div className="flex-1 space-y-10">
 
                             {/* Boards Section */}
                             <div>
-                                <div className="flex items-center justify-between mb-3 border-b border-emerald-500/20 pb-2">
-                                    <h3 className="text-xs font-semibold text-emerald-400/70 uppercase tracking-widest flex items-center gap-2">
-                                        <Layout className="w-3 h-3" /> Pizarras Activas
+                                <div className="flex items-center justify-between mb-4 border-b border-emerald-500/20 pb-3">
+                                    <h3 className="text-sm font-semibold text-emerald-400/70 uppercase tracking-widest flex items-center gap-2">
+                                        <Layout className="w-4 h-4" /> Pizarras Activas
                                     </h3>
-                                    <Button size="sm" variant="ghost" className="h-6 gap-1 text-[10px] text-emerald-400 hover:bg-emerald-500/10" onClick={handleCreateBoard}>
-                                        <Plus className="h-3 w-3" /> Nueva
+                                    <Button size="sm" variant="ghost" className="h-8 rounded-full gap-2 text-xs text-emerald-400 hover:bg-emerald-500/10 hover:text-emerald-300" onClick={handleCreateBoard}>
+                                        <Plus className="h-4 w-4" /> Nueva
                                     </Button>
                                 </div>
 
-                                <ScrollArea className="h-[200px] rounded-md border border-emerald-500/10 bg-emerald-950/20 p-2">
+                                <ScrollArea className="h-[240px] rounded-2xl border border-emerald-500/10 bg-emerald-950/20 p-3 shadow-inner">
                                     {boards.map((board) => (
                                         <div
                                             key={board.id}
-                                            className="flex items-center justify-between p-3 mb-2 rounded-lg border border-emerald-500/10 bg-black/40 hover:bg-emerald-500/10 transition-colors group cursor-pointer"
+                                            className="flex items-center justify-between p-4 mb-3 rounded-2xl border border-emerald-500/10 bg-black/40 hover:bg-emerald-500/10 hover:border-emerald-500/30 transition-all group cursor-pointer"
                                             onClick={() => handleOpenBoard(board.id)}
                                         >
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-1 h-8 rounded-full bg-emerald-500/50" />
+                                            <div className="flex items-center gap-4">
+                                                <div className="w-1.5 h-10 rounded-full bg-emerald-500/50 group-hover:bg-emerald-400 transition-colors" />
                                                 <div className="overflow-hidden">
-                                                    <p className="font-medium text-sm truncate text-emerald-100">{board.name}</p>
-                                                    <p className="text-[10px] text-emerald-500/60">{formatDate(board.updatedAt)}</p>
+                                                    <p className="font-medium text-base truncate text-emerald-100 group-hover:text-white transition-colors">{board.name}</p>
+                                                    <p className="text-[11px] text-emerald-500/60 mt-0.5">{formatDate(board.updatedAt)}</p>
                                                 </div>
                                             </div>
-                                            <Button size="icon" variant="ghost" className="h-6 w-6 opacity-0 group-hover:opacity-100 text-destructive hover:bg-destructive/20" onClick={(e) => { e.stopPropagation(); deleteBoard(board.id); }}>
-                                                <Trash2 className="h-3 w-3" />
+                                            <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 text-destructive hover:bg-destructive/20" onClick={(e) => { e.stopPropagation(); deleteBoard(board.id); }}>
+                                                <Trash2 className="h-4 w-4" />
                                             </Button>
                                         </div>
                                     ))}
                                     {boards.length === 0 && (
-                                        <div className="text-center py-8 text-emerald-500/30 text-xs">
+                                        <div className="flex flex-col items-center justify-center h-full text-emerald-500/40 text-sm">
+                                            <Layout className="w-8 h-8 mb-3 opacity-20" />
                                             <p>No hay pizarras activas.</p>
-                                            <Button variant="link" className="text-emerald-400 text-xs p-0 h-auto mt-1" onClick={handleCreateBoard}>Crear una ahora</Button>
+                                            <Button variant="link" className="text-emerald-400 text-sm p-0 h-auto mt-2 hover:text-emerald-300" onClick={handleCreateBoard}>Crear una ahora</Button>
                                         </div>
                                     )}
                                 </ScrollArea>
                             </div>
 
                             {/* Publication Hub / Network Access */}
-                            <div className="bg-emerald-950/10 rounded-xl p-4 border border-emerald-500/20">
-                                <h3 className="text-xs font-semibold text-emerald-400/90 uppercase tracking-widest mb-4 flex items-center gap-2">
-                                    <Send className="w-3 h-3" /> Zona de Publicación
-                                </h3>
+                            <div className="bg-emerald-950/20 rounded-3xl p-6 border border-emerald-500/20 shadow-inner">
+                                <div className="flex flex-col items-center text-center mb-6">
+                                    <div className="p-2 rounded-full bg-emerald-500/20 mb-3">
+                                        <Send className="w-5 h-5 text-emerald-400" />
+                                    </div>
+                                    <h3 className="text-sm font-semibold text-emerald-400/90 uppercase tracking-widest">
+                                        Zona de Publicación
+                                    </h3>
+                                    <p className="text-xs text-emerald-200/60 mt-2 max-w-[250px] leading-relaxed mx-auto">
+                                        Selecciona el contexto espacial de tu publicación actual.
+                                    </p>
+                                </div>
 
-                                <p className="text-[10px] text-emerald-200/60 mb-4 leading-relaxed">
-                                    Selecciona el contexto de tu publicación para acceder a las herramientas especializadas de la red.
-                                </p>
-
-                                <div className="grid grid-cols-2 gap-2">
+                                <div className="grid grid-cols-2 gap-3">
                                     <PublicationButton
-                                        icon={<Library className="w-4 h-4" />}
+                                        icon={<Library className="w-5 h-5" />}
                                         label="Biblioteca"
                                         sub="Archivo & Wiki"
                                     />
                                     <PublicationButton
-                                        icon={<Users className="w-4 h-4" />}
+                                        icon={<Users className="w-5 h-5" />}
                                         label="Política"
                                         sub="Propuestas & Votos"
                                     />
                                     <PublicationButton
-                                        icon={<BookOpen className="w-4 h-4" />}
+                                        icon={<BookOpen className="w-5 h-5" />}
                                         label="Educación"
                                         sub="Cursos & Guías"
                                     />
                                     <PublicationButton
-                                        icon={<Palette className="w-4 h-4" />}
+                                        icon={<Palette className="w-5 h-5" />}
                                         label="Cultura"
                                         sub="Arte & Eventos"
                                     />
@@ -195,10 +200,10 @@ export function SideCurtains() {
                         {/* Footer / Close Trigger */}
                         <button
                             onClick={handleClose}
-                            className="flex items-center gap-2 text-emerald-400/50 text-xs mt-auto hover:text-emerald-200 transition-colors pt-6 flex-shrink-0"
+                            className="flex justify-center items-center gap-2 text-emerald-400/50 text-sm mt-10 hover:text-emerald-200 transition-colors py-4 flex-shrink-0 border-t border-emerald-500/10"
                         >
-                            <ArrowLeft className="w-4 h-4" />
-                            <span>Deslizar para cerrar</span>
+                            <ArrowLeft className="w-5 h-5" />
+                            <span className="uppercase tracking-wider">Deslizar para cerrar</span>
                         </button>
                     </div>
                 </motion.div>
@@ -229,11 +234,11 @@ export function SideCurtains() {
                             <div className="h-full w-full relative pointer-events-auto">
                                 {/* Close/Back Button for Board Viewer */}
                                 <div className="absolute top-4 left-4 z-50">
-                                    <Button variant="secondary" size="sm" onClick={handleCloseBoard} className="gap-2 backdrop-blur-md bg-background/50">
-                                        ← Volver
+                                    <Button variant="secondary" size="lg" onClick={handleCloseBoard} className="gap-2 backdrop-blur-md bg-background/50 rounded-full">
+                                        <ArrowLeft className="w-4 h-4 mr-1" /> Volver
                                     </Button>
-                                    <Button variant="ghost" size="icon" onClick={handleClose} className="ml-2 hover:bg-destructive/20 hover:text-destructive">
-                                        <X className="w-4 h-4" />
+                                    <Button variant="ghost" size="icon" onClick={handleClose} className="ml-2 hover:bg-destructive/20 hover:text-destructive rounded-full w-10 h-10">
+                                        <X className="w-5 h-5" />
                                     </Button>
                                 </div>
                                 <UniversalBoardViewer />
@@ -267,7 +272,7 @@ function ToolButton({ icon, label, description, color, align = "left" }: { icon:
         <Button
             variant="ghost"
             className={cn(
-                "h-auto py-3 px-4 flex items-center gap-4 w-full justify-start border bg-black/20 backdrop-blur-sm transition-all duration-300 group",
+                "h-auto py-3 px-4 flex items-center gap-4 w-full justify-start border bg-black/20 backdrop-blur-sm transition-all duration-300 group rounded-xl",
                 colorStyles[color],
                 isRight && "flex-row-reverse text-right"
             )}
@@ -290,15 +295,15 @@ function PublicationButton({ icon, label, sub }: { icon: React.ReactNode, label:
     return (
         <Button
             variant="ghost"
-            className="h-auto py-3 px-3 flex flex-col items-start gap-2 w-full border border-emerald-500/10 bg-emerald-950/20 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all group"
+            className="h-auto py-4 px-4 flex flex-col items-center text-center gap-2 w-full rounded-2xl border border-emerald-500/10 bg-emerald-950/20 hover:bg-emerald-500/20 hover:border-emerald-500/30 transition-all group"
         >
-            <div className="flex items-center gap-2 w-full">
-                <div className="text-emerald-400 group-hover:text-emerald-300 transition-colors">
+            <div className="flex flex-col items-center gap-1 w-full relative z-10">
+                <div className="p-3 bg-emerald-500/10 rounded-full text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 group-hover:scale-110 transition-all duration-300">
                     {icon}
                 </div>
-                <span className="text-sm font-medium text-emerald-100">{label}</span>
+                <span className="text-sm font-medium text-emerald-100 mt-1">{label}</span>
             </div>
-            <span className="text-[10px] text-emerald-500/60 font-mono pl-1">{sub}</span>
+            <span className="text-[10px] text-emerald-500/60 font-mono tracking-wider">{sub}</span>
         </Button>
     )
 }

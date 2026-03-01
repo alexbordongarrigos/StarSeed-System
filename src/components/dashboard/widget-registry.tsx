@@ -1,6 +1,8 @@
 'use client';
 
 import { DashboardWidget } from "./dashboard-types";
+import dynamic from "next/dynamic";
+import { useAppearance } from "@/context/appearance-context";
 import { ThemeSelectorWidget } from "@/components/dashboard/widgets/theme-selector-widget";
 import { ExploreNetworkWidget } from "@/components/dashboard/widgets/explore-network-widget";
 import { MyPagesWidget } from "@/components/dashboard/widgets/my-pages-widget";
@@ -9,6 +11,35 @@ import { SystemStatusWidget } from "@/components/dashboard/widgets/system-status
 import { RecentActivityWidget } from "@/components/dashboard/widgets/recent-activity-widget";
 import { NexusQuickAccessWidget } from "@/components/dashboard/widgets/nexus-quick-access-widget";
 import { ThemeManagerWidget } from "@/components/dashboard/widgets/theme-manager-widget";
+import { MentalCoherenceWidget } from "@/components/dashboard/widgets/mental-coherence-widget";
+import { ActiveProjectsWidget } from "@/components/dashboard/widgets/active-projects-widget";
+
+import { WeatherBasicWidget } from "@/modules/weather/components/widgets/terrestrial/weather-basic-widget";
+import { WeatherBasicFluidWidget } from "@/modules/weather/components/widgets/terrestrial/weather-basic-fluid";
+import { WeatherBasicCrystallineWidget } from "@/modules/weather/components/widgets/terrestrial/weather-basic-crystalline";
+import { WeatherBasicFloraWidget } from "@/modules/weather/components/widgets/terrestrial/weather-basic-flora";
+import { WeatherBasicAuroraWidget } from "@/modules/weather/components/widgets/terrestrial/weather-basic-aurora";
+import { WeatherOmniClimateWidget } from "@/modules/weather/components/widgets/terrestrial/weather-omni-climate";
+const WeatherHolisticWidget = dynamic(
+    () => import("@/modules/weather/components/widgets/terrestrial/weather-holistic-widget").then(mod => mod.WeatherHolisticWidget),
+    { ssr: false, loading: () => <div className="w-full h-full flex items-center justify-center bg-black/50 text-white/50 animate-pulse text-xs">Cargando 3D...</div> }
+);
+import { WeatherTemperatureWidget } from "@/modules/weather/components/widgets/terrestrial/weather-temperature-widget";
+import { WeatherWindWidget } from "@/modules/weather/components/widgets/terrestrial/weather-wind-widget";
+import { WeatherHumidityWidget } from "@/modules/weather/components/widgets/terrestrial/weather-humidity-widget";
+import { WeatherUvWidget } from "@/modules/weather/components/widgets/terrestrial/weather-uv-widget";
+import { WeatherAirQualityWidget } from "@/modules/weather/components/widgets/terrestrial/weather-air-quality-widget";
+import { SpaceEnergySolarWidget } from "@/modules/weather/components/widgets/solar/space-energy-solar-widget";
+import { SpaceEnergySchumannWidget } from "@/modules/weather/components/widgets/space/space-energy-schumann-widget";
+import { KpIndexWidget } from "@/modules/weather/components/widgets/space/space-weather-kp-index-widget";
+import { MagnetometerWidget } from "@/modules/weather/components/widgets/space/space-weather-magnetometer-widget";
+import { XRayFlareWidget } from "@/modules/weather/components/widgets/space/space-weather-flare-widget";
+import { WeatherAstronomyWidget } from "@/modules/weather/components/widgets/terrestrial/weather-astronomy-widget";
+import { CulturalFeedWidget } from "@/components/dashboard/widgets/cultural-feed-widget";
+import { CalculatorWidget } from "@/components/dashboard/widgets/calculator-widget";
+import { RelevantPostsWidget } from "@/components/dashboard/widgets/relevant-posts-widget";
+import { MessagesWidget } from "@/components/dashboard/widgets/messages-widget";
+import { NotificationsWidget } from "@/components/dashboard/widgets/notifications-widget";
 
 // We can extract other widgets later
 import { Activity, Calendar, Heart, ArrowRight } from "lucide-react";
@@ -19,6 +50,8 @@ interface WidgetProps {
 }
 
 export function WidgetRegistry({ widget }: WidgetProps) {
+    const { config } = useAppearance();
+
     switch (widget.widget_type) {
         case 'EXPLORE_NETWORK':
             return <ExploreNetworkWidget />;
@@ -37,12 +70,64 @@ export function WidgetRegistry({ widget }: WidgetProps) {
             return <LearningPathWidget />;
         case 'SOCIAL_RADAR':
             return <SocialRadarWidget />;
+        case 'COLLAB_PROJECTS':
+            return <ActiveProjectsWidget />;
         case 'WELLNESS':
-            return <WellnessWidget />;
+            return <MentalCoherenceWidget />;
         case 'THEME_SELECTOR':
             return <ThemeSelectorWidget />;
         case 'THEME_MANAGER':
             return <ThemeManagerWidget />;
+        case 'WEATHER_BASIC':
+            const variant = config.widgets?.weatherVariant || "minimal";
+            if (variant === "hologram" || variant === "crystalline") {
+                return <WeatherBasicCrystallineWidget />;
+            } else if (variant === "detailed" || variant === "fluid") {
+                return <WeatherBasicFluidWidget />;
+            } else if (variant === "flora") {
+                return <WeatherBasicFloraWidget />;
+            } else if (variant === "aurora") {
+                return <WeatherBasicAuroraWidget />;
+            } else if (variant === 'omni') {
+                return <WeatherOmniClimateWidget />;
+            } else {
+                return <WeatherBasicWidget />;
+            }
+        case 'WEATHER_HOLISTIC':
+            return <WeatherHolisticWidget />;
+        case 'WEATHER_TEMPERATURE':
+            return <WeatherTemperatureWidget />;
+        case 'WEATHER_WIND':
+            return <WeatherWindWidget />;
+        case 'WEATHER_HUMIDITY':
+            return <WeatherHumidityWidget />;
+        case 'WEATHER_UV':
+            return <WeatherUvWidget />;
+        case 'WEATHER_AIR_QUALITY':
+            return <WeatherAirQualityWidget />;
+        case 'WEATHER_SPACE_SOLAR':
+        case 'WEATHER_SPACE': // Legacy mapping
+            return <SpaceEnergySolarWidget />;
+        case 'WEATHER_SPACE_SCHUMANN':
+            return <SpaceEnergySchumannWidget />;
+        case 'WEATHER_SPACE_KP':
+            return <KpIndexWidget />;
+        case 'WEATHER_SPACE_MAGNETOMETER':
+            return <MagnetometerWidget />;
+        case 'WEATHER_SPACE_FLARE':
+            return <XRayFlareWidget />;
+        case 'WEATHER_ASTRONOMY':
+            return <WeatherAstronomyWidget />;
+        case 'CULTURAL_FEED':
+            return <CulturalFeedWidget />;
+        case 'CALCULATOR':
+            return <CalculatorWidget />;
+        case 'RELEVANT_POSTS':
+            return <RelevantPostsWidget />;
+        case 'MESSAGES':
+            return <MessagesWidget />;
+        case 'NOTIFICATIONS':
+            return <NotificationsWidget />;
         default:
             return (
                 <div className="flex h-full items-center justify-center p-4">
@@ -123,33 +208,6 @@ function SocialRadarWidget() {
                 <div className="text-center mt-2">
                     <Button variant="link" size="sm" className="text-pink-500">Ver Calendario Completo</Button>
                 </div>
-            </div>
-        </div>
-    );
-}
-
-function WellnessWidget() {
-    return (
-        <div className="flex h-full flex-col p-6 text-white bg-gradient-to-br from-teal-400 to-teal-600 relative overflow-hidden backdrop-blur-md">
-            <div className="absolute -bottom-4 -right-4 bg-white/20 h-32 w-32 rounded-full blur-2xl" />
-            <div className="absolute top-4 right-4 bg-white/10 p-2 rounded-full">
-                <Heart className="h-5 w-5 text-white" />
-            </div>
-
-            <div className="relative z-10 flex flex-col h-full justify-between">
-                <div>
-                    <h3 className="text-lg font-headline font-semibold opacity-90">Bienestar</h3>
-                    <p className="text-sm opacity-75">Tu momento diario</p>
-                </div>
-
-                <div className="text-center py-4">
-                    <p className="text-xl font-medium font-serif italic mb-2">"La paz comienza con una sonrisa."</p>
-                    <p className="text-xs opacity-75">- Madre Teresa</p>
-                </div>
-
-                <Button variant="secondary" size="sm" className="w-full bg-white/20 hover:bg-white/30 border-0 text-white backdrop-blur-sm">
-                    Registrar Estado de Ánimo
-                </Button>
             </div>
         </div>
     );

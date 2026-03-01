@@ -5,7 +5,7 @@ import { getElementsByCategory } from "@/config/system-elements";
 import { StitchIconWrapper } from "./StitchIconWrapper";
 
 interface StitchDockProps {
-    theme: "liquid" | "organic";
+    theme: "liquid" | "organic" | "liquid-crystal";
     className?: string;
     iconSize?: number;
     magnification?: number;
@@ -46,9 +46,9 @@ export function StitchDock({ theme, className, iconSize = 48, magnification = 1.
             className={cn(
                 "relative flex items-center justify-center gap-4 px-6 py-4 transition-all duration-500",
                 // Container Shape & Style (Defaults if no styleConfig)
-                !styleConfig && (isLiquid
-                    ? "rounded-xl border border-cyan-500/30 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_30px_rgba(6,182,212,0.15)]"
-                    : "rounded-full border border-emerald-500/20 bg-emerald-950/40 backdrop-blur-lg shadow-[0_0_30px_rgba(16,185,129,0.15)]"),
+                !styleConfig && isLiquid && "rounded-xl border border-cyan-500/30 bg-slate-900/60 backdrop-blur-xl shadow-[0_0_30px_rgba(6,182,212,0.15)]",
+                !styleConfig && theme === "liquid-crystal" && "crystal-panel rounded-3xl !py-3 !px-5",
+                !styleConfig && theme === "organic" && "rounded-full border border-emerald-500/20 bg-emerald-950/40 backdrop-blur-lg shadow-[0_0_30px_rgba(16,185,129,0.15)]",
                 className
             )}
             style={dynamicStyle}
@@ -56,9 +56,9 @@ export function StitchDock({ theme, className, iconSize = 48, magnification = 1.
             {/* Ambient Background Glow */}
             <div className={cn(
                 "absolute inset-0 -z-10 opacity-50",
-                isLiquid
-                    ? "bg-gradient-to-t from-cyan-900/20 to-transparent"
-                    : "bg-gradient-to-b from-emerald-900/20 to-transparent rounded-full"
+                isLiquid && "bg-gradient-to-t from-cyan-900/20 to-transparent",
+                theme === "liquid-crystal" && "bg-gradient-to-t from-white/5 to-transparent rounded-3xl",
+                theme === "organic" && "bg-gradient-to-b from-emerald-900/20 to-transparent rounded-full"
             )} style={{ borderRadius: styleConfig?.borderRadius ? `${styleConfig.borderRadius}px` : undefined }} />
 
             {/* Docker Items */}

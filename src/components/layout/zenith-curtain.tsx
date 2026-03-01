@@ -82,27 +82,29 @@ export function ZenithCurtain() {
                     <div className="relative z-10 w-full h-full flex flex-col pt-12 text-cyan-50 overflow-y-auto">
 
                         {/* Header Section */}
-                        <div className="flex flex-col items-center justify-start flex-none px-6">
+                        <div className="flex flex-col items-center justify-start flex-none px-6 md:px-12">
                             <motion.div
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
-                                className="flex items-center gap-3 mb-8"
+                                className="flex flex-col md:flex-row items-center gap-4 mb-8 w-full justify-between"
                             >
-                                <div className="p-3 rounded-full bg-cyan-500/20 border border-cyan-400/30 shadow-[0_0_15px_rgba(34,211,238,0.6)]">
-                                    <Globe className="w-6 h-6 text-cyan-300" />
+                                <div className="flex items-center gap-4">
+                                    <div className="p-4 rounded-full bg-cyan-500/20 border border-cyan-400/30 shadow-[0_0_25px_rgba(34,211,238,0.5)]">
+                                        <Globe className="w-8 h-8 md:w-10 md:h-10 text-cyan-300" />
+                                    </div>
+                                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-light tracking-widest uppercase font-headline">
+                                        Explorador Universal & Nexus
+                                    </h2>
                                 </div>
-                                <h2 className="text-2xl font-light tracking-widest uppercase font-headline">
-                                    Explorador Universal & Nexus
-                                </h2>
                                 <Button
                                     variant="outline"
-                                    size="sm"
+                                    size="lg"
                                     onClick={() => window.location.href = '/nexus'}
-                                    className="ml-auto border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-100 uppercase text-xs tracking-wider"
+                                    className="border-cyan-500/30 text-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-100 uppercase text-xs md:text-sm tracking-wider rounded-full px-6"
                                 >
                                     Ir a Espacios de Trabajo
-                                    <ArrowRight className="w-3 h-3 ml-2" />
+                                    <ArrowRight className="w-4 h-4 ml-2" />
                                 </Button>
                             </motion.div>
 
@@ -110,24 +112,24 @@ export function ZenithCurtain() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.3 }}
-                                className="w-full max-w-3xl flex flex-col gap-6"
+                                className="w-full max-w-4xl flex flex-col gap-8 items-center"
                             >
                                 {/* AI nexus Controls */}
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full mb-2">
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 w-full mb-2">
                                     <AIResourceControl
-                                        icon={<BrainCircuit className="w-4 h-4 text-cyan-300" />}
+                                        icon={<BrainCircuit className="w-5 h-5 md:w-6 md:h-6 text-cyan-300" />}
                                         label="Modelo IA"
                                         value="Gemini 1.5 Pro"
                                         color="cyan"
                                     />
                                     <AIResourceControl
-                                        icon={<Bot className="w-4 h-4 text-emerald-300" />}
+                                        icon={<Bot className="w-5 h-5 md:w-6 md:h-6 text-emerald-300" />}
                                         label="Agente"
                                         value="Arquitecto"
                                         color="emerald"
                                     />
                                     <AIResourceControl
-                                        icon={<Server className="w-4 h-4 text-amber-300" />}
+                                        icon={<Server className="w-5 h-5 md:w-6 md:h-6 text-amber-300" />}
                                         label="Servidores MCP"
                                         value="4 Activos"
                                         color="amber"
@@ -135,25 +137,25 @@ export function ZenithCurtain() {
                                 </div>
 
                                 {/* Search & Input Field */}
-                                <div className="relative w-full group">
-                                    <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-purple-500 to-indigo-500 rounded-full opacity-30 group-hover:opacity-60 blur-md transition-opacity duration-500" />
-                                    <div className="relative flex items-center bg-black/40 backdrop-blur-md rounded-full border border-cyan-500/30">
-                                        <Search className="ml-4 w-5 h-5 text-cyan-500/70" />
+                                <div className="relative w-full group max-w-3xl mx-auto">
+                                    <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-purple-500 to-indigo-500 rounded-full opacity-30 group-hover:opacity-60 blur-lg transition-opacity duration-500" />
+                                    <div className="relative flex items-center bg-black/40 backdrop-blur-xl rounded-full border border-cyan-500/30 p-2">
+                                        <Search className="ml-4 md:ml-6 w-6 h-6 md:w-8 md:h-8 text-cyan-500/70" />
                                         <input
                                             type="text"
                                             value={query}
                                             onChange={(e) => setQuery(e.target.value)}
                                             placeholder="Explora la red, pregunta a la IA o busca recursos..."
-                                            className="w-full bg-transparent py-4 px-4 text-cyan-100 placeholder:text-cyan-500/50 focus:outline-none"
+                                            className="w-full bg-transparent py-4 md:py-5 px-4 md:px-6 text-base md:text-lg text-cyan-100 placeholder:text-cyan-500/50 focus:outline-none"
                                         />
-                                        <button className="mr-2 p-2 rounded-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 transition-colors">
-                                            <Sparkles className="w-5 h-5" />
+                                        <button className="mr-2 md:mr-4 p-3 md:p-4 rounded-full bg-cyan-500/20 hover:bg-cyan-500/40 text-cyan-300 transition-colors">
+                                            <Sparkles className="w-6 h-6 md:w-7 md:h-7" />
                                         </button>
                                     </div>
                                 </div>
 
                                 {/* Domains / Context Toggles */}
-                                <div className="flex justify-center gap-2 flex-wrap">
+                                <div className="flex justify-center auto-cols-auto gap-3 flex-wrap max-w-3xl mx-auto">
                                     {[
                                         { id: 'ALL', label: 'Todo', icon: Globe },
                                         { id: 'POLITICS', label: 'Política', icon: Users },
@@ -165,13 +167,13 @@ export function ZenithCurtain() {
                                             key={scope.id}
                                             onClick={() => setActiveDomain(scope.id as Domain)}
                                             className={cn(
-                                                "flex items-center gap-2 px-3 py-1.5 rounded-full text-xs uppercase tracking-wider transition-all duration-300 border",
+                                                "flex items-center gap-2 md:gap-3 px-5 py-2.5 md:px-6 md:py-3 rounded-full text-xs md:text-sm uppercase tracking-wider transition-all duration-300 border backdrop-blur-md",
                                                 activeDomain === scope.id
-                                                    ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-100 shadow-[0_0_10px_rgba(34,211,238,0.3)]"
-                                                    : "bg-transparent border-white/5 text-cyan-500/50 hover:bg-white/5 hover:text-cyan-300"
+                                                    ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-100 shadow-[0_0_15px_rgba(34,211,238,0.4)] font-medium scale-105"
+                                                    : "bg-black/20 border-white/5 text-cyan-500/60 hover:bg-white/10 hover:text-cyan-300 hover:scale-105"
                                             )}
                                         >
-                                            <scope.icon className="w-3 h-3" />
+                                            <scope.icon className="w-4 h-4 md:w-5 md:h-5" />
                                             {scope.label}
                                         </button>
                                     ))}
@@ -184,32 +186,32 @@ export function ZenithCurtain() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.4 }}
-                            className="flex-1 w-full max-w-5xl mx-auto px-6 mt-8 pb-10 overflow-y-auto"
+                            className="flex-1 w-full max-w-6xl mx-auto px-6 md:px-12 mt-10 md:mt-12 pb-12 overflow-y-auto custom-scrollbar"
                         >
                             {query && (
-                                <div className="flex items-center justify-between text-xs text-cyan-500/60 font-mono mb-4 border-b border-cyan-500/20 pb-2">
+                                <div className="flex items-center justify-between text-xs md:text-sm text-cyan-500/60 font-mono mb-6 border-b border-cyan-500/20 pb-3">
                                     <span>RESULTADOS DE LA RED ({filteredResults.length})</span>
-                                    <span className="flex items-center gap-1"><Brain className="w-3 h-3" /> IA INDEXING ACTIVE</span>
+                                    <span className="flex items-center gap-2"><Brain className="w-4 h-4" /> IA INDEXING ACTIVE</span>
                                 </div>
                             )}
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                 {filteredResults.map((result) => (
-                                    <div key={result.id} className="group relative bg-black/20 border border-cyan-500/10 rounded-lg overflow-hidden hover:bg-cyan-950/20 hover:border-cyan-500/30 transition-all cursor-pointer">
-                                        <div className="p-4">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <Badge variant="outline" className="text-[10px] bg-cyan-950/30 border-cyan-500/20 text-cyan-300">{result.type}</Badge>
-                                                <span className="text-[10px] text-cyan-500/50 uppercase">{result.domain}</span>
+                                    <div key={result.id} className="group relative bg-black/30 border border-cyan-500/10 rounded-3xl overflow-hidden hover:bg-cyan-950/30 hover:border-cyan-500/40 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-[0_10px_30px_rgba(34,211,238,0.15)] hover:-translate-y-1">
+                                        <div className="p-6 md:p-8">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <Badge variant="outline" className="text-[10px] md:text-xs px-3 py-1 rounded-full bg-cyan-950/40 border-cyan-500/30 text-cyan-300">{result.type}</Badge>
+                                                <span className="text-[10px] md:text-xs text-cyan-500/50 uppercase font-medium tracking-wider">{result.domain}</span>
                                             </div>
-                                            <h3 className="font-semibold text-cyan-50 mb-1 group-hover:text-cyan-300 transition-colors">{result.title}</h3>
-                                            <p className="text-xs text-cyan-200/60 line-clamp-2">{result.description}</p>
+                                            <h3 className="font-semibold text-lg md:text-xl text-cyan-50 mb-2 group-hover:text-cyan-300 transition-colors leading-tight">{result.title}</h3>
+                                            <p className="text-xs md:text-sm text-cyan-200/70 line-clamp-3 leading-relaxed">{result.description}</p>
                                         </div>
-                                        <div className="px-4 py-2 border-t border-cyan-500/10 flex items-center justify-between bg-black/20">
-                                            <div className="flex gap-2">
-                                                {result.tags.slice(0, 2).map(t => <span key={t} className="text-[9px] text-cyan-500/40">#{t}</span>)}
+                                        <div className="px-6 md:px-8 py-4 border-t border-cyan-500/10 flex items-center justify-between bg-black/40">
+                                            <div className="flex gap-2 flex-wrap">
+                                                {result.tags.slice(0, 3).map(t => <span key={t} className="text-[10px] md:text-xs text-cyan-500/50 px-2 py-1 rounded-full bg-cyan-950/20">#{t}</span>)}
                                             </div>
-                                            <Button size="icon" variant="ghost" className="h-6 w-6 text-cyan-400 hover:text-cyan-200 hover:bg-cyan-500/20">
-                                                <ArrowRight className="w-3 h-3" />
+                                            <Button size="icon" variant="ghost" className="h-8 w-8 md:h-10 md:w-10 rounded-full text-cyan-400 hover:text-cyan-100 hover:bg-cyan-500/30 shrink-0">
+                                                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                             </Button>
                                         </div>
                                     </div>
@@ -218,9 +220,9 @@ export function ZenithCurtain() {
 
                             {/* Empty State / Prompt */}
                             {!query && (
-                                <div className="text-center py-12 opacity-50">
-                                    <BrainCircuit className="w-12 h-12 text-cyan-500/30 mx-auto mb-4" />
-                                    <p className="text-cyan-200/50 text-sm">Inicia una búsqueda para explorar la Memoria Universal o interactuar con Nexus.</p>
+                                <div className="text-center py-16 md:py-24 opacity-50">
+                                    <BrainCircuit className="w-16 h-16 md:w-20 md:h-20 text-cyan-500/30 mx-auto mb-6" />
+                                    <p className="text-cyan-200/50 text-sm md:text-base max-w-md mx-auto">Inicia una búsqueda para explorar la Memoria Universal o interactuar con el Nexo.</p>
                                 </div>
                             )}
                         </motion.div>
@@ -228,9 +230,9 @@ export function ZenithCurtain() {
 
                     {/* Decorative "Light Beams" */}
                     <div className="absolute inset-0 z-0 opacity-30 pointer-events-none mix-blend-screen">
-                        <div className="absolute top-0 left-[20%] w-[1px] h-full bg-gradient-to-b from-cyan-400 to-transparent blur-[1px]" />
-                        <div className="absolute top-0 right-[20%] w-[1px] h-full bg-gradient-to-b from-cyan-400 to-transparent blur-[1px]" />
-                        <div className="absolute top-0 left-1/2 w-[400px] h-full -translate-x-1/2 bg-gradient-to-b from-cyan-500/10 to-transparent blur-[40px]" />
+                        <div className="absolute top-0 left-[20%] w-[1px] h-full bg-gradient-to-b from-cyan-400 to-transparent blur-[2px]" />
+                        <div className="absolute top-0 right-[20%] w-[1px] h-full bg-gradient-to-b from-cyan-400 to-transparent blur-[2px]" />
+                        <div className="absolute top-0 left-1/2 w-[600px] h-full -translate-x-1/2 bg-gradient-to-b from-cyan-500/10 to-transparent blur-[60px]" />
                     </div>
                 </motion.div>
             )}
@@ -240,12 +242,12 @@ export function ZenithCurtain() {
 
 function ModeToggle({ icon, label, active }: { icon: React.ReactNode, label: string, active?: boolean }) {
     return (
-        <button className={`flex items-center gap-2 px-4 py-2 rounded-full border transition-all duration-300 ${active
-            ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-100 shadow-[0_0_10px_rgba(34,211,238,0.3)]"
+        <button className={`flex items-center gap-3 px-5 py-2.5 rounded-full border transition-all duration-300 ${active
+            ? "bg-cyan-500/20 border-cyan-400/50 text-cyan-100 shadow-[0_0_15px_rgba(34,211,238,0.3)]"
             : "bg-transparent border-white/10 text-cyan-500/50 hover:bg-white/5 hover:text-cyan-300"
             }`}>
             {icon}
-            <span className="text-xs uppercase tracking-wider">{label}</span>
+            <span className="text-xs md:text-sm uppercase tracking-wider">{label}</span>
         </button>
     )
 }

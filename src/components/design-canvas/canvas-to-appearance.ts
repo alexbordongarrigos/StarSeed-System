@@ -79,6 +79,26 @@ export function mapCanvasToAppearance(state: CanvasState): Record<string, any> {
             selectionMode: state.secondary.selectionMode === "block" ? "block" : "text",
             cursor: state.secondary.cursor,
             customCursorSvg: state.secondary.customCursorSvg
+        },
+
+        widgets: {
+            dashboardTemplate: state.widgets.dashboardTemplate,
+            bgStyle: state.widgets.bgStyle,
+            borderStyle: state.widgets.borderStyle,
+            headerStyle: state.widgets.headerStyle,
+            shadows: state.widgets.shadows,
+            glassOpacity: state.widgets.glassOpacity,
+            noiseTexture: state.widgets.noiseTexture,
+            cornerSmoothing: state.widgets.cornerSmoothing,
+            innerGlow: state.widgets.innerGlow,
+            reflection: state.widgets.reflection,
+            ashostGraphType: state.widgets.ashostGraphType,
+            ashostColor: state.widgets.ashostColor,
+            ashostSpeed: state.widgets.ashostSpeed,
+            weatherVariant: state.widgets.weatherVariant,
+            culturalFeedStyle: state.widgets.culturalFeedStyle,
+            calculatorTheme: state.widgets.calculatorTheme,
+            feedSource: state.widgets.feedSource,
         }
     };
 }

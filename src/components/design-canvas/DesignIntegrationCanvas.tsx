@@ -28,6 +28,7 @@ import { IconographyTab } from "./tabs/IconographyTab";
 import { PositioningTab } from "./tabs/PositioningTab";
 import { WidgetStyleTab } from "./tabs/WidgetStyleTab";
 import { BackgroundsTab } from "./tabs/BackgroundsTab";
+import { SplineIntegrationTab } from "./tabs/SplineIntegrationTab";
 import { SecondaryElementsTab } from "./tabs/SecondaryElementsTab";
 import { CanvasPreview } from "./CanvasPreview";
 import { ExportPanel } from "./ExportPanel";
@@ -62,6 +63,7 @@ type CanvasAction =
     | { type: "SET_LAYOUT_CONFIG"; payload: Partial<CanvasState["layoutConfig"]> }
     | { type: "SET_ANIMATIONS"; payload: Partial<CanvasState["animations"]> }
     | { type: "SET_UI"; payload: Partial<CanvasState["ui"]> }
+    | { type: "SET_SPLINE_CONFIG"; payload: Partial<CanvasState["splineConfig"]> }
     | { type: "LOAD_STATE"; payload: CanvasState }
     | { type: "RESET" };
 
@@ -117,6 +119,8 @@ function canvasReducer(state: CanvasState, action: CanvasAction): CanvasState {
             return { ...state, animations: { ...state.animations, ...action.payload } };
         case "SET_UI":
             return { ...state, ui: { ...state.ui, ...action.payload } };
+        case "SET_SPLINE_CONFIG":
+            return { ...state, splineConfig: { ...state.splineConfig, ...action.payload } as any };
         case "LOAD_STATE":
             return {
                 ...defaultCanvasState,
@@ -144,6 +148,7 @@ function canvasReducer(state: CanvasState, action: CanvasAction): CanvasState {
                 backgrounds: { ...defaultCanvasState.backgrounds, ...action.payload.backgrounds },
                 secondary: { ...defaultCanvasState.secondary, ...action.payload.secondary },
                 layoutConfig: { ...defaultCanvasState.layoutConfig, ...action.payload.layoutConfig },
+                splineConfig: { ...defaultCanvasState.splineConfig, ...action.payload.splineConfig } as any,
                 ui: { ...defaultCanvasState.ui, ...action.payload.ui },
             };
         case "RESET":
@@ -228,6 +233,7 @@ export function DesignIntegrationCanvas() {
         badges: "components",
         "liquid-examples": "effects",
         trinity: "trinity",
+        spline: "spline",
     };
 
     // When an element is selected in the preview, switch to the right tab and scroll to it
@@ -374,9 +380,9 @@ export function DesignIntegrationCanvas() {
 
     const tabs = [
         { id: "generative", label: "AI Studio", icon: Bot, color: "text-cyan-400" },
-        { id: "trinity", label: "Trinidad", icon: Sparkles, color: "text-cyan-400" },
-
-        { id: "colors", label: "Colores", icon: Palette, color: "text-purple-400" },
+        { id: "trinity", label: "Sistema Trinity", icon: Wand2, color: "text-purple-400" },
+        { id: "spline", label: "Spline 3D", icon: Wand2, color: "text-emerald-400" },
+        { id: "colors", label: "Paleta Neural", icon: Palette, color: "text-blue-400" },
         { id: "typography", label: "Tipografía", icon: Type, color: "text-emerald-400" },
         { id: "components", label: "Componentes", icon: Component, color: "text-amber-400" },
         { id: "effects", label: "Efectos", icon: Sparkles, color: "text-rose-400" },
@@ -520,6 +526,10 @@ export function DesignIntegrationCanvas() {
                                 <TrinityTab dispatch={dispatch} state={state} />
                             </TabsContent>
 
+                            {/* Spline 3D Tab */}
+                            <TabsContent value="spline" className="h-full mt-0 p-0">
+                                <SplineIntegrationTab dispatch={dispatch} state={state} />
+                            </TabsContent>
                             <TabsContent value="colors" className="h-full mt-0 p-0">
                                 <ColorPaletteTab dispatch={dispatch} state={state} />
                             </TabsContent>

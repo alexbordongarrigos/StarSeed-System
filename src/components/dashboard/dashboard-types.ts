@@ -11,7 +11,26 @@ export type WidgetType =
     | 'SYSTEM_STATUS'
     | 'RECENT_ACTIVITY'
     | 'NEXUS_QUICK_ACCESS'
-    | 'THEME_MANAGER';
+    | 'THEME_MANAGER'
+    | 'WEATHER_BASIC'         // Mixed Minimal
+    | 'WEATHER_TEMPERATURE'
+    | 'WEATHER_UV'
+    | 'WEATHER_WIND'
+    | 'WEATHER_HUMIDITY'
+    | 'WEATHER_AIR_QUALITY'
+    | 'WEATHER_SPACE_SOLAR'
+    | 'WEATHER_SPACE_SCHUMANN'
+    | 'WEATHER_SPACE_KP'
+    | 'WEATHER_SPACE_MAGNETOMETER'
+    | 'WEATHER_SPACE_FLARE'
+    | 'WEATHER_SPACE' // Legacy type mapping
+    | 'WEATHER_ASTRONOMY'
+    | 'WEATHER_HOLISTIC'      // All combined 3D Sphere
+    | 'CULTURAL_FEED'
+    | 'CALCULATOR'
+    | 'RELEVANT_POSTS'
+    | 'MESSAGES'
+    | 'NOTIFICATIONS';
 
 export interface Dashboard {
     id: string;

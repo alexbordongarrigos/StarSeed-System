@@ -8,7 +8,7 @@ export interface StitchToggleProps {
     checked: boolean;
     onChange: (checked: boolean) => void;
     label?: string;
-    style?: "standard" | "cyber" | "fluid";
+    style?: "standard" | "cyber" | "fluid" | "liquid-crystal";
     size?: "sm" | "md" | "lg";
     activeColor?: string;
     inactiveColor?: string;
@@ -67,15 +67,21 @@ export function StitchToggle({
                         className={cn(
                             "relative flex items-center p-0.5 transition-colors duration-300 isolate",
                             style === "standard" && "rounded-full",
+                            style === "liquid-crystal" && "rounded-full crystal-panel",
                             style === "cyber" && "rounded-sm clip-path-cyber-toggle",
                             style === "fluid" && "rounded-2xl"
                         )}
                         style={{
                             width: sizeConfig.width,
                             height: sizeConfig.height,
-                            backgroundColor: checked ? `${activeColor}22` : inactiveColor,
-                            border: "1px solid rgba(255,255,255,0.1)",
-                            backdropFilter: "blur(8px)"
+                            backgroundColor: checked
+                                ? (style === "liquid-crystal" ? "rgba(255,255,255,0.15)" : `${activeColor}22`)
+                                : (style === "liquid-crystal" ? "rgba(255,255,255,0.02)" : inactiveColor),
+                            border: style === "liquid-crystal"
+                                ? (checked ? "1px solid rgba(255,255,255,0.4)" : "1px solid rgba(255,255,255,0.1)")
+                                : "1px solid rgba(255,255,255,0.1)",
+                            backdropFilter: "blur(12px)",
+                            boxShadow: style === "liquid-crystal" && checked ? "0 0 15px rgba(255,255,255,0.2) inset" : "none"
                         }}
                         onClick={() => !disabled && onChange(!checked)}
                     >
@@ -105,6 +111,7 @@ export function StitchToggle({
                             className={cn(
                                 "absolute z-10 flex items-center justify-center",
                                 style === "standard" && "rounded-full shadow-[0_0_10px_rgba(255,255,255,0.2)]",
+                                style === "liquid-crystal" && "rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.3)] backdrop-blur-md",
                                 style === "cyber" && "rounded-[2px]",
                                 style === "fluid" && "rounded-xl"
                             )}
@@ -112,8 +119,12 @@ export function StitchToggle({
                                 x: checked
                                     ? sizeConfig.width - sizeConfig.knob - sizeConfig.padding * 2
                                     : 0,
-                                backgroundColor: checked ? activeColor : "rgba(255,255,255,0.8)",
-                                boxShadow: checked ? `0 0 15px ${activeColor}88` : "0 0 5px rgba(255,255,255,0.2)"
+                                backgroundColor: checked
+                                    ? (style === "liquid-crystal" ? "rgba(255,255,255,0.9)" : activeColor)
+                                    : "rgba(255,255,255,0.8)",
+                                boxShadow: checked
+                                    ? (style === "liquid-crystal" ? `0 0 15px rgba(255,255,255,0.5)` : `0 0 15px ${activeColor}88`)
+                                    : "0 0 5px rgba(255,255,255,0.2)"
                             }}
                             transition={springConfig as any}
                             style={{
@@ -122,8 +133,8 @@ export function StitchToggle({
                                 left: sizeConfig.padding,
                                 top: "50%",
                                 marginTop: -(sizeConfig.knob / 2),
-                                backgroundColor: "white",
-                                border: "1px solid rgba(255,255,255,0.2)"
+                                backgroundColor: style === "liquid-crystal" ? "rgba(255,255,255,0.8)" : "white",
+                                border: style === "liquid-crystal" ? "0.5px solid rgba(255,255,255,0.5)" : "1px solid rgba(255,255,255,0.2)"
                             }}
                         >
                             {/* Inner detail for cyber style */}

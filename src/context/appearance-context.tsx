@@ -122,10 +122,23 @@ export interface AppearanceConfig {
         spacingScale: number;
     };
     widgets: {
+        dashboardTemplate: "standard" | "analyst" | "creative" | "strategic";
         bgStyle: "glass" | "solid" | "cyber" | "mesh";
         borderStyle: "none" | "thin" | "glow" | "neon";
+        headerStyle: "simple" | "accented" | "underlined";
         shadows: "none" | "sm" | "md" | "lg" | "neon";
         glassOpacity: number;
+        noiseTexture: boolean;
+        cornerSmoothing: number;
+        innerGlow: "none" | "subtle" | "strong";
+        reflection: number;
+        ashostGraphType: "bar" | "line" | "radar" | "dot";
+        ashostColor: string;
+        ashostSpeed: number;
+        weatherVariant: "minimal" | "detailed" | "hologram" | "fluid" | "flora" | "aurora" | "omni" | "crystalline";
+        culturalFeedStyle: "masonry" | "list" | "cards";
+        calculatorTheme: "glass" | "cyber" | "minimal";
+        feedSource: "all" | "ontocracia" | "nexus" | "cultura";
     };
     liquidGlass: {
         enabled: boolean;
@@ -225,7 +238,7 @@ export interface AppearanceConfig {
         reducedMotion: boolean;
     };
     themeStore: {
-        activeMode: "custom" | "crystal" | "liquid" | "solid-crystal" | "primary";
+        activeMode: "custom" | "crystal" | "liquid" | "solid-crystal" | "primary" | "spline-default";
         activeTemplateId?: string;
         savedThemes: Array<{
             id: string;
@@ -278,13 +291,13 @@ const defaultConfig: AppearanceConfig = {
         crystalPreset: "none",
     },
     background: {
-        type: "solid",
+        type: "webgl",
         value: "",
         blur: 0,
         animation: "none",
-        overlayOpacity: 0.4, // Darker overlay for better text contrast by default
+        overlayOpacity: 0.1, // Reduced overlay opacity so Spline looks vivid
         overlayColor: "black",
-        webglVariant: "hex",
+        webglVariant: "liquid",
         webglSpeed: 0.5,
         webglZoom: 1.0,
         liquidColors: ["#F15A22", "#0A0E27", "#F15A22", "#0A0E27", "#F15A22", "#0A0E27"],
@@ -341,10 +354,23 @@ const defaultConfig: AppearanceConfig = {
         spacingScale: 1,
     },
     widgets: {
+        dashboardTemplate: "standard",
         bgStyle: "glass",
         borderStyle: "thin",
+        headerStyle: "simple",
         shadows: "md",
         glassOpacity: 0.6,
+        noiseTexture: false,
+        cornerSmoothing: 0,
+        innerGlow: "none",
+        reflection: 0,
+        ashostGraphType: "line",
+        ashostColor: "#06B6D4",
+        ashostSpeed: 1,
+        weatherVariant: "minimal",
+        culturalFeedStyle: "cards",
+        calculatorTheme: "glass",
+        feedSource: "all",
     },
     liquidGlass: {
         enabled: false,
@@ -444,7 +470,7 @@ const defaultConfig: AppearanceConfig = {
         reducedMotion: false,
     },
     themeStore: {
-        activeMode: "custom",
+        activeMode: "primary",
         savedThemes: [],
     },
 };
@@ -490,7 +516,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
 
     // Load from local storage on mount
     useEffect(() => {
-        const saved = localStorage.getItem("appearance-config");
+        const saved = localStorage.getItem("appearance-config-v2");
         if (saved) {
             try {
                 const parsed = JSON.parse(saved);
@@ -514,7 +540,7 @@ export function AppearanceProvider({ children }: { children: React.ReactNode }) 
     // Save to local storage on change
     useEffect(() => {
         if (!mounted) return;
-        localStorage.setItem("appearance-config", JSON.stringify(config));
+        localStorage.setItem("appearance-config-v2", JSON.stringify(config));
         applyStyles(config);
     }, [config, mounted]);
 

@@ -8,10 +8,10 @@ import { Palette, User, Shield } from "lucide-react";
 
 export default function SettingsPage() {
     return (
-        <div className="container mx-auto p-6 space-y-8">
-            <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-bold tracking-tight">Configuración</h1>
-                <p className="text-muted-foreground">
+        <div className="w-full max-w-[1200px] mx-auto px-[clamp(0.75rem,2vw,2rem)] py-[clamp(1rem,2vw,2rem)] space-y-[clamp(1rem,2vw,2rem)]">
+            <div className="flex flex-col gap-[clamp(0.25rem,0.5vw,0.5rem)]">
+                <h1 className="page-title">Configuración</h1>
+                <p className="page-subtitle">
                     Gestiona tus preferencias, apariencia y seguridad.
                 </p>
             </div>

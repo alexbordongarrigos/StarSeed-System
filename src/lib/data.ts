@@ -189,6 +189,66 @@ export const politicalProposals = [
             { name: 'Análisis de Impacto Técnico.docx', url: '#' }
         ],
         comments: politicalComments,
+    },
+    {
+        id: 'prop-2',
+        title: 'Protocolo de Energía Renovable Comunitaria',
+        ef: 'E.F. Norte Verde',
+        urgency: 'Alta',
+        status: 'Debate Oficial',
+        deadline: '12 días',
+        summary: 'Establece un protocolo para la creación de microrredes eléctricas comunitarias alimentadas por energía solar y eólica, con gestión descentralizada mediante contratos inteligentes.',
+        details: 'El protocolo define los estándares técnicos para la instalación de paneles solares y aerogeneradores en edificios comunitarios. Propone un sistema de créditos de energía distribuibles entre los miembros que contribuyan con su infraestructura. La gestión de la microrred será transparente y auditada en la blockchain pública de StarSeed.',
+        votes: [
+            { name: 'A Favor', votes: 890, color: 'hsl(var(--accent-hsl))' },
+            { name: 'En Contra', votes: 156, color: 'hsl(var(--destructive-hsl))' },
+            { name: 'Abstención', votes: 74, color: 'hsl(var(--muted-foreground-hsl))' }
+        ],
+        files: [
+            { name: 'Estudio de Viabilidad Energética.pdf', url: '#' },
+            { name: 'Mapa de Recursos Solares.svg', url: '#' }
+        ],
+        comments: [],
+    },
+    {
+        id: 'prop-3',
+        title: 'Currículo Abierto de Educación Universal',
+        ef: 'Consejo Global StarSeed',
+        urgency: 'Media',
+        status: 'Apoyo Inicial',
+        deadline: '21 días',
+        summary: 'Define los estándares mínimos de un currículo de educación libre y universal accesible a todos los miembros de la red, desde alfabetización básica hasta competencias transhumanas avanzadas.',
+        details: 'El currículo se organiza en 7 niveles de competencia, desde fundamentos de lectoescritura y pensamiento crítico hasta inteligencia artificial aplicada y gobernanza ontocrática. Cada nivel tiene módulos teóricos y prácticos. La validación de competencias se realiza mediante proyectos comunitarios evaluados por pares certificados.',
+        votes: [
+            { name: 'A Favor', votes: 2340, color: 'hsl(var(--accent-hsl))' },
+            { name: 'En Contra', votes: 89, color: 'hsl(var(--destructive-hsl))' },
+            { name: 'Abstención', votes: 210, color: 'hsl(var(--muted-foreground-hsl))' }
+        ],
+        files: [
+            { name: 'Borrador de Currículo v2.3.pdf', url: '#' },
+            { name: 'Comparativa con Sistemas Educativos.docx', url: '#' },
+            { name: 'Feedback Comunidad.xlsx', url: '#' }
+        ],
+        comments: [],
+    },
+    {
+        id: 'prop-4',
+        title: 'Constitución de la Economía de Semillas (Seeds)',
+        ef: 'E.F. Nexus Digital',
+        urgency: 'Urgente',
+        status: 'Borrador',
+        deadline: '5 días para apoyo',
+        summary: 'Codifica las reglas fundamentales de la economía interna basada en Seeds (SC): emisión, distribución, karma, y los mecanismos anti-monopolio para asegurar que los recursos fluyan libremente según contribución.',
+        details: 'El ecosistema económico StarSeed se basa en Seeds (SC) como unidad de reconocimiento de contribución. Esta constitución define: (1) Emisión controlada ligada a actividad real, (2) Sistema de karma como multiplicador de influencia, (3) Límites de acumulación para prevenir concentración de poder, (4) Distribución básica universal para todos los miembros verificados, (5) Mecanismos de donación y transferencia comunitaria.',
+        votes: [
+            { name: 'A Favor', votes: 445, color: 'hsl(var(--accent-hsl))' },
+            { name: 'En Contra', votes: 312, color: 'hsl(var(--destructive-hsl))' },
+            { name: 'Abstención', votes: 188, color: 'hsl(var(--muted-foreground-hsl))' }
+        ],
+        files: [
+            { name: 'Whitepaper Economía Seeds.pdf', url: '#' }
+        ],
+        comments: [],
     }
 ];
 
@@ -708,5 +768,158 @@ export const judicialCases = [
         participants: ['Vecinos Bloque 4', 'Club de Música'],
         description: 'Múltiples reportes sobre niveles de ruido excediendo lo permitido después de las 22:00.',
         date: '2026-06-01'
+    },
+    {
+        id: 'case-3',
+        title: 'Uso indebido de datos de perfil',
+        type: 'Digital',
+        status: 'Abierto',
+        facilitator: 'Mediador Digital 1',
+        participants: ['Perfil @innovatech', 'E.F. Norte Verde'],
+        description: 'Se acusa a @innovatech de recolectar datos de miembros de la EF sin consentimiento explícito para análisis de comportamiento.',
+        date: '2026-06-14'
     }
+];
+
+// ---- Hub Data ----
+export const studyGroups = [
+    {
+        id: 'sg-1',
+        name: 'Física Cuántica Aplicada',
+        type: 'Estudio',
+        members: 24,
+        nextSession: 'Mar 18 Jun, 5PM',
+        topic: 'Entrelazamiento y No-Localidad',
+        level: 'Avanzado',
+        tags: ['Ciencia', 'Física'],
+        avatar: 'https://placehold.co/40x40.png',
+    },
+    {
+        id: 'sg-2',
+        name: 'Gobernanza Ontocrática',
+        type: 'Estudio',
+        members: 41,
+        nextSession: 'Mié 19 Jun, 6PM',
+        topic: 'DAOs y Entidades Federativas: Comparativa',
+        level: 'Intermedio',
+        tags: ['Política', 'Gobernanza'],
+        avatar: 'https://placehold.co/40x40.png',
+    },
+    {
+        id: 'sg-3',
+        name: 'Arte Generativo & WebGL',
+        type: 'Cultural',
+        members: 33,
+        nextSession: 'Vie 21 Jun, 7PM',
+        topic: 'Three.js: Sistemas de Partículas',
+        level: 'Principiante',
+        tags: ['Arte', 'Tecnología'],
+        avatar: 'https://placehold.co/40x40.png',
+    },
+    {
+        id: 'sg-4',
+        name: 'Permacultura Urbana',
+        type: 'Cultural',
+        members: 67,
+        nextSession: 'Sáb 22 Jun, 10AM',
+        topic: 'Diseño de Huertos Verticales con IA',
+        level: 'Principiante',
+        tags: ['Ecología', 'Comunidad'],
+        avatar: 'https://placehold.co/40x40.png',
+    },
+];
+
+export const communityEvents = [
+    {
+        id: 'ev-1',
+        title: 'Asamblea General E.F. Valle Central',
+        date: '2026-06-20',
+        time: '18:00',
+        type: 'Político',
+        location: 'Sala de Debates Digital - EVP',
+        attendees: 234,
+        capacity: 500,
+        color: 'blue',
+        urgent: true,
+    },
+    {
+        id: 'ev-2',
+        title: 'Festival de Arte Generativo CiberSol',
+        date: '2026-06-22',
+        time: '15:00',
+        type: 'Cultural',
+        location: 'Anfiteatro Virtual Helix',
+        attendees: 890,
+        capacity: 2000,
+        color: 'purple',
+        urgent: false,
+    },
+    {
+        id: 'ev-3',
+        title: 'Hackathon: Herramientas de Gobernanza IA',
+        date: '2026-06-25',
+        time: '09:00',
+        type: 'Educativo',
+        location: 'Hub del Nexus Digital',
+        attendees: 156,
+        capacity: 300,
+        color: 'green',
+        urgent: false,
+    },
+    {
+        id: 'ev-4',
+        title: 'Meditación Colectiva Aurora Boreal',
+        date: '2026-06-28',
+        time: '21:00',
+        type: 'Bienestar',
+        location: 'Entorno Virtual: Glaciar Ártico',
+        attendees: 421,
+        capacity: 1000,
+        color: 'cyan',
+        urgent: false,
+    },
+];
+
+export const userBadges = [
+    { id: 'badge-1', name: 'Ciudadano Verificado', icon: '✓', color: 'blue', description: 'Identidad verificada en la red StarSeed' },
+    { id: 'badge-2', name: 'Mediador Certificado', icon: '⚖', color: 'purple', description: 'Certificado para facilitar procesos judiciales restaurativos' },
+    { id: 'badge-3', name: 'Pionero StarSeed', icon: '⭐', color: 'gold', description: 'Miembro fundador de la red (primeros 1000 usuarios)' },
+    { id: 'badge-4', name: 'Experto en Gobernanza', icon: '🏛', color: 'green', description: 'Ha contribuido significativamente al sistema legislativo' },
+    { id: 'badge-5', name: 'Creador Cultural', icon: '🎨', color: 'pink', description: 'Ha publicado obras reconocidas por la comunidad' },
+];
+
+export const politicalParties = [
+    {
+        id: 'party-1',
+        name: 'Frente de Soberanía Digital',
+        ideology: 'Privacidad radical, descentralización',
+        members: 1240,
+        founded: '2025-01',
+        votes_history: 847,
+        color: '#6C5CE7',
+        isFollowing: true,
+        replicationActive: false,
+    },
+    {
+        id: 'party-2',
+        name: 'Coalición Verde Ontocrática',
+        ideology: 'Ecología, gobernanza participativa',
+        members: 2890,
+        founded: '2024-08',
+        votes_history: 1203,
+        color: '#00B894',
+        isFollowing: true,
+        replicationActive: true,
+    },
+    {
+        id: 'party-3',
+        name: 'Vanguardia Transhumanista',
+        ideology: 'IA aumentativa, expansión cognitiva',
+        members: 654,
+        founded: '2025-03',
+        votes_history: 412,
+        color: '#0984E3',
+        isFollowing: false,
+        replicationActive: false,
+    },
 ];

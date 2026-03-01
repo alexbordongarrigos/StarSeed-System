@@ -15,7 +15,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
         {/* CENTER CONTENT */}
         <div className="flex flex-col flex-1 min-w-0 relative h-full">
           {/* Main Page Content */}
-          <main className="flex-1 overflow-y-auto bg-background/20 backdrop-blur-sm scrollbar-hide">
+          <main className="flex-1 overflow-y-auto bg-background/20 scrollbar-hide">
             {children}
           </main>
         </div>

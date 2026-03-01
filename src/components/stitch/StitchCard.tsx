@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { motion, useMotionValue, useSpring, useTransform, HTMLMotionProps } from "framer-motion";
 
 interface StitchCardProps extends Omit<HTMLMotionProps<"div">, "ref"> {
-    theme?: "liquid" | "organic" | "glass" | "neon" | "brutal" | "mesh" | "holographic" | "cyber";
+    theme?: "liquid" | "liquid-crystal" | "organic" | "glass" | "neon" | "brutal" | "mesh" | "holographic" | "cyber";
     variant?: "default" | "hoverable";
     interactive?: {
         tilt?: boolean;
@@ -45,7 +45,7 @@ export function StitchCard({
     const rotateX = useTransform(mouseY, [-50, 50], [10, -10]);
     const rotateY = useTransform(mouseX, [-50, 50], [-10, 10]);
 
-    const primaryColor = styleConfig?.primaryColor || (theme === "liquid" ? "#22d3ee" : theme === "organic" ? "#10b981" : "#ffffff");
+    const primaryColor = styleConfig?.primaryColor || (theme === "liquid" || theme === "liquid-crystal" ? "#22d3ee" : theme === "organic" ? "#10b981" : "#ffffff");
 
     // Interactive Glow Pointer - Moved to top level to comply with Rules of Hooks
     const glowBackground = useTransform(
@@ -89,6 +89,8 @@ export function StitchCard({
                 return "bg-white text-black border-2 border-black shadow-[8px_8px_0_rgba(0,0,0,1)]";
             case "neon":
                 return "bg-black/80 border-fuchsia-500/50 shadow-[0_0_15px_rgba(217,70,239,0.1)]";
+            case "liquid-crystal":
+                return "crystal-card";
             case "liquid":
                 return "bg-cyan-950/30 border-cyan-500/20 shadow-[0_0_20px_rgba(6,182,212,0.05)]";
             case "organic":

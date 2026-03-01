@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence, HTMLMotionProps } from "framer-motion";
 
 interface StitchInputProps extends Omit<HTMLMotionProps<"input">, "ref"> {
-    theme?: "default" | "glass" | "liquid" | "neon" | "brutal";
+    theme?: "default" | "glass" | "liquid" | "liquid-crystal" | "neon" | "brutal";
     label?: string;
     floatingLabel?: boolean;
     styleConfig?: {
@@ -62,6 +62,13 @@ export function StitchInput({
 
     const getThemeStyles = () => {
         switch (theme) {
+            case "liquid-crystal":
+                return {
+                    container: cn("crystal-panel transition-all duration-300", isFocused ? "border-cyan-400/50" : "border-white/10"),
+                    border: "transparent",
+                    glow: isFocused ? `0 0 ${20 * glowIntensity}px ${primaryColor}44` : "none",
+                    backdrop: `blur(${blur}px)`
+                };
             case "liquid":
                 return {
                     container: "bg-white/5",
@@ -149,7 +156,7 @@ export function StitchInput({
                     }}
                 >
                     {/* Liquid Effect Background */}
-                    {theme === "liquid" && (
+                    {(theme === "liquid" || theme === "liquid-crystal") && (
                         <motion.div
                             className="absolute inset-0 opacity-20 pointer-events-none"
                             animate={{
@@ -189,7 +196,7 @@ export function StitchInput({
                 </div>
 
                 {/* Focus Line for Glass/Liquid */}
-                {(theme === "glass" || theme === "liquid") && (
+                {(theme === "glass" || theme === "liquid" || theme === "liquid-crystal") && (
                     <motion.div
                         className="absolute bottom-0 left-4 right-4 h-[2px] rounded-full pointer-events-none origin-center"
                         initial={{ scaleX: 0, opacity: 0 }}

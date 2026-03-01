@@ -42,6 +42,7 @@ function Slider({ label, value, min, max, step, unit, onChange, color = "teal" }
 }
 
 const CARD_PRESETS: { id: CanvasState["components"]["cardPreset"]; label: string; desc: string; theme: any }[] = [
+    { id: "liquid-crystal", label: "Cristal Líquido", desc: "Base de cristal líquido", theme: "liquid-crystal" },
     { id: "crystal", label: "Crystal Clear", desc: "Transparent glass", theme: "glass" },
     { id: "liquid-action", label: "Liquid Action", desc: "Motion blur depth", theme: "liquid" },
     { id: "holographic", label: "Holographic", desc: "Prismatic shimmer", theme: "holographic" },
@@ -162,6 +163,28 @@ export function WidgetStyleTab({ state, dispatch }: Props) {
                                         <div className="absolute inset-x-0 bottom-0 h-1 z-0 bg-gradient-to-r from-purple-500/50 to-pink-500/50 opacity-0 group-hover:opacity-100 transition-opacity" />
                                     </button>
                                 ))}
+                            </div>
+                        </div>
+
+                        <div className="pt-4 border-t border-white/5 space-y-4">
+                            <h4 className="text-[11px] uppercase tracking-wider text-blue-400 font-medium flex items-center gap-2">
+                                <AppWindow className="w-3 h-3" /> Widgets Específicos
+                            </h4>
+                            <div className="flex items-center justify-between">
+                                <span className="text-[11px] text-white/70">Widget del Clima</span>
+                                <Select value={widgets.weatherVariant || "minimal"} onValueChange={(v: any) => update({ weatherVariant: v })}>
+                                    <SelectTrigger className="w-[130px] h-7 text-[10px] bg-white/5 border-white/10 text-white">
+                                        <SelectValue />
+                                    </SelectTrigger>
+                                    <SelectContent className="bg-slate-900 border-white/10 text-white">
+                                        <SelectItem value="minimal">Minimalista (Default)</SelectItem>
+                                        <SelectItem value="detailed">Fluido Etéreo</SelectItem>
+                                        <SelectItem value="hologram">Cristalino Data</SelectItem>
+                                        <SelectItem value="flora">Flora Bioluminiscente</SelectItem>
+                                        <SelectItem value="aurora">Aurora Glass</SelectItem>
+                                        <SelectItem value="omni">Omni-Climate HUD</SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </div>
                     </div>

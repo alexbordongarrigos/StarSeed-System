@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 
 interface StitchNetworkControlsProps {
     className?: string;
-    theme?: "liquid" | "organic";
+    theme?: "liquid" | "organic" | "liquid-crystal";
 }
 
 export function StitchNetworkControls({ className, theme = "liquid" }: StitchNetworkControlsProps) {
@@ -15,8 +15,9 @@ export function StitchNetworkControls({ className, theme = "liquid" }: StitchNet
     return (
         <div className={cn(
             "flex items-center gap-3 p-2 backdrop-blur-md rounded-2xl border",
-            theme === "liquid" ? "bg-cyan-950/30 border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]" :
-                "bg-emerald-950/30 border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]",
+            theme === "liquid" && "bg-cyan-950/30 border-cyan-500/20 shadow-[0_0_15px_rgba(6,182,212,0.1)]",
+            theme === "liquid-crystal" && "crystal-panel",
+            theme === "organic" && "bg-emerald-950/30 border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]",
             className
         )}>
             {actionIcons.map((el, index) => (

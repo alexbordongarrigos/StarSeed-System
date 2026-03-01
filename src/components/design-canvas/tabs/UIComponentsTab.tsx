@@ -26,6 +26,7 @@ interface Props {
 
 // ─── Presets ──────────────────────────────────────────────────
 const BUTTON_STYLES: { id: CanvasState["components"]["buttonStyle"]; label: string; desc: string; cls: string }[] = [
+    { id: "liquid-crystal", label: "Cristal Líquido", desc: "Fondo fluido cristalino", cls: "bg-gradient-to-tr from-white/10 to-transparent backdrop-blur-md border border-white/20" },
     { id: "glass", label: "Crystal Glass", desc: "Frosted blur", cls: "bg-white/10 backdrop-blur-md border border-white/20" },
     { id: "liquid", label: "Liquid", desc: "Morphing refraction", cls: "bg-gradient-to-br from-purple-500/20 to-cyan-500/20 backdrop-blur-lg border border-white/15" },
     { id: "neon", label: "Neon Glow", desc: "Electric borders", cls: "bg-transparent border-2 border-cyan-400 shadow-[0_0_15px_rgba(0,212,255,0.3)]" },
@@ -35,6 +36,7 @@ const BUTTON_STYLES: { id: CanvasState["components"]["buttonStyle"]; label: stri
 
 
 const INPUT_BORDERS: { id: CanvasState["components"]["inputBorderStyle"]; label: string; desc: string; cls: string }[] = [
+    { id: "liquid-crystal", label: "Cristal Líquido", desc: "Borde refractivo predeterminado", cls: "bg-white/5 backdrop-blur-md border border-white/20 rounded-md" },
     { id: "default", label: "Standard", desc: "Sólido minimalista", cls: "bg-white/5 border border-white/20 rounded-md" },
     { id: "glass", label: "Crystal Glass", desc: "Borde refractivo frosted", cls: "bg-white/5 backdrop-blur-sm border border-white/15 rounded-md" },
     { id: "liquid", label: "Liquid Action", desc: "Entrada enfocada en energía", cls: "bg-gradient-to-r from-cyan-500/15 to-purple-500/15 border border-cyan-400/30 rounded-md" },
@@ -43,6 +45,7 @@ const INPUT_BORDERS: { id: CanvasState["components"]["inputBorderStyle"]; label:
 ];
 
 const TOOLTIP_STYLES: { id: CanvasState["components"]["tooltipStyle"]; label: string; desc: string }[] = [
+    { id: "liquid-crystal", label: "Cristal Líquido", desc: "Refractivo base" },
     { id: "glass", label: "Glass", desc: "Frosted translúcido" },
     { id: "solid", label: "Sólido", desc: "Fondo opaco" },
     { id: "minimal", label: "Minimal", desc: "Solo texto" },
@@ -274,6 +277,7 @@ export function UIComponentsTab({ state, dispatch, selectedElement }: Props) {
                 <div className="bg-white/3 rounded-2xl p-4 border border-white/5 space-y-4">
                     <OptionChips
                         options={[
+                            { id: "liquid-crystal" as const, label: "Liq Crystal" },
                             { id: "underline" as const, label: "Underline" },
                             { id: "pill" as const, label: "Pill" },
                             { id: "box" as const, label: "Box" },
@@ -512,6 +516,7 @@ export function UIComponentsTab({ state, dispatch, selectedElement }: Props) {
                         onChange={v => updateToasts({ duration: v })} onHighlight={handleHighlight} />
                     <OptionChips
                         options={[
+                            { id: "liquid-crystal" as const, label: "Liq Crystal" },
                             { id: "glass" as const, label: "Glass" },
                             { id: "solid" as const, label: "Sólido" },
                             { id: "minimal" as const, label: "Minimal" },

@@ -26,7 +26,7 @@ interface StitchTabsProps {
         activeBgOpacity: number;
         indicatorThickness: number;
     };
-    theme?: "default" | "liquid" | "organic" | "glass" | "neon" | "brutal";
+    theme?: "default" | "liquid" | "liquid-crystal" | "organic" | "glass" | "neon" | "brutal";
 }
 
 export function StitchTabs({
@@ -185,7 +185,7 @@ export function StitchTabs({
                         )}
 
                         {/* Liquid Effect (Overlay) */}
-                        {theme === "liquid" && isActive && (
+                        {(theme === "liquid" || theme === "liquid-crystal") && isActive && (
                             <motion.div
                                 className="absolute inset-0 bg-white/5 overflow-hidden z-[-1] rounded-inherit"
                                 animate={{

@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-export type BadgeStyle = "pill" | "square" | "dot";
+export type BadgeStyle = "pill" | "square" | "dot" | "liquid-crystal";
 
 interface StitchBadgeProps {
     children?: React.ReactNode;
@@ -29,7 +29,7 @@ export function StitchBadge({
 
     const baseStyles = cn(
         "inline-flex items-center justify-center font-bold transition-all duration-300",
-        style === "pill" && "px-2 py-0.5 rounded-full text-[9px] min-w-[20px]",
+        (style === "pill" || style === "liquid-crystal") && "px-2 py-0.5 rounded-full text-[9px] min-w-[20px]",
         style === "square" && "px-1.5 py-0.5 rounded-md text-[9px] min-w-[20px]",
         style === "dot" && "w-2.5 h-2.5 rounded-full",
         className
@@ -74,11 +74,11 @@ export function StitchBadge({
             animate={{ scale: 1, opacity: 1 }}
             className={cn(
                 baseStyles,
-                currentVariant.bg,
-                !isDot && "border",
-                !isDot && currentVariant.border,
+                style === "liquid-crystal" ? "crystal-button" : currentVariant.bg,
+                !isDot && style !== "liquid-crystal" && "border",
+                !isDot && style !== "liquid-crystal" && currentVariant.border,
                 !isDot && currentVariant.text,
-                styleConfig?.glow && currentVariant.glow
+                styleConfig?.glow && style !== "liquid-crystal" && currentVariant.glow
             )}
             style={{
                 borderColor: !isDot ? `${currentVariant.color}44` : undefined,

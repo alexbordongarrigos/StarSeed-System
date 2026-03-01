@@ -138,7 +138,7 @@ export function TrinityFloatingInterface() {
                                         <FloatingButton
                                             key="dashboard"
                                             onClick={() => router.push("/dashboard")}
-                                            icon={<Home className="w-5 h-5" />}
+                                            icon={<Home className="w-6 h-6" />}
                                             label="Inicio"
                                             color="neutral"
                                             delay={0.2}
@@ -149,7 +149,7 @@ export function TrinityFloatingInterface() {
                                         <FloatingButton
                                             key="profile"
                                             onClick={() => router.push("/profile/starseeduser")}
-                                            icon={<User className="w-5 h-5" />}
+                                            icon={<User className="w-6 h-6" />}
                                             label="Perfil"
                                             color="neutral"
                                             delay={0.15}
@@ -160,7 +160,7 @@ export function TrinityFloatingInterface() {
                                         <FloatingButton
                                             key="publish"
                                             onClick={() => router.push("/publish")}
-                                            icon={<PenSquare className="w-5 h-5" />}
+                                            icon={<PenSquare className="w-6 h-6" />}
                                             label="Publicar"
                                             color="emerald"
                                             delay={0.12}
@@ -171,7 +171,7 @@ export function TrinityFloatingInterface() {
                                         <FloatingButton
                                             key="creation"
                                             onClick={handleCreation}
-                                            icon={<Layout className="w-5 h-5" />}
+                                            icon={<Layout className="w-6 h-6" />}
                                             label="Creación"
                                             color="emerald"
                                             delay={0.1}
@@ -186,10 +186,10 @@ export function TrinityFloatingInterface() {
                                 {/* CENTER (The Anchor/Nucleus) */}
                                 <FloatingButton
                                     onClick={() => setExpanded(!isExpanded)}
-                                    icon={isExpanded ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                                    icon={isExpanded ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
                                     color="neutral"
                                     size="large" // Main trigger is larger
-                                    className="z-50 mx-2"
+                                    className="z-50 mx-4"
                                 />
 
                                 {/* RIGHT WING (Context & Exploration) */}
@@ -228,14 +228,14 @@ function FloatingButton({ onClick, icon, label, isActive, delay = 0, color = "ne
 
     // Chromodynamic Map
     const colorStyles = {
-        neutral: "bg-background/80 border-white/10 text-foreground hover:bg-white/20",
+        neutral: "bg-background/80 border-foreground/10 text-foreground hover:bg-foreground/10",
         cyan: "bg-cyan-500/20 border-cyan-500/30 text-cyan-200 hover:text-cyan-100 hover:bg-cyan-500/40 hover:shadow-[0_0_20px_rgba(34,211,238,0.4)]",
         amber: "bg-amber-500/20 border-amber-500/30 text-amber-200 hover:text-amber-100 hover:bg-amber-500/40 hover:shadow-[0_0_20px_rgba(251,191,36,0.4)]",
         emerald: "bg-emerald-500/20 border-emerald-500/30 text-emerald-200 hover:text-emerald-100 hover:bg-emerald-500/40 hover:shadow-[0_0_20px_rgba(52,211,153,0.4)]",
         crimson: "bg-red-600/20 border-red-600/30 text-red-200 hover:text-red-100 hover:bg-red-600/40 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]"
     };
 
-    const sizeClasses = size === "large" ? "w-16 h-16" : "w-12 h-12";
+    const sizeClasses = size === "large" ? "w-20 h-20" : "w-14 h-14";
 
     return (
         <motion.div

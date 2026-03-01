@@ -16,7 +16,19 @@ import {
     Rocket,
     Calendar,
     Plus,
-    BrainCircuit
+    BrainCircuit,
+    CloudLightning,
+    CloudRain,
+    Wind,
+    ThermometerSun,
+    Tornado,
+    Globe,
+    MoonStar,
+    Sparkles,
+    Radio,
+    Calculator,
+    MessageSquare,
+    BellRing
 } from "lucide-react";
 import { useState } from "react";
 import { WidgetType } from "./dashboard-types";
@@ -104,6 +116,114 @@ const AVAILABLE_WIDGETS: { type: WidgetType; title: string; description: string;
         title: 'Gestor de Temas',
         description: 'Organiza, reordena y aplica temas guardados desde el canvas.',
         icon: <Palette className="h-5 w-5 text-fuchsia-500" />
+    },
+    {
+        type: 'WEATHER_BASIC',
+        title: 'Clima Dinámico Minimalista',
+        description: 'Resumen atmosférico visual interactivo.',
+        icon: <CloudLightning className="h-5 w-5 text-sky-400" />
+    },
+    {
+        type: 'WEATHER_HOLISTIC',
+        title: 'Clima Esfera 3D Holística',
+        description: 'Combinación espacial y terrestre en 3D interactivo.',
+        icon: <Globe className="h-5 w-5 text-indigo-400" />
+    },
+    {
+        type: 'WEATHER_TEMPERATURE',
+        title: 'Temperatura',
+        description: 'Sensor atmosférico principal con animaciones térmicas.',
+        icon: <ThermometerSun className="h-5 w-5 text-orange-400" />
+    },
+    {
+        type: 'WEATHER_WIND',
+        title: 'Corrientes de Viento',
+        description: 'Velocidad y dirección con efecto 3D aerodinámico.',
+        icon: <Wind className="h-5 w-5 text-slate-400" />
+    },
+    {
+        type: 'WEATHER_HUMIDITY',
+        title: 'Humedad Relativa',
+        description: 'Saturación en el ambiente.',
+        icon: <CloudRain className="h-5 w-5 text-blue-400" />
+    },
+    {
+        type: 'WEATHER_UV',
+        title: 'Índice UV',
+        description: 'Radiación ultravioleta solar.',
+        icon: <Sparkles className="h-5 w-5 text-yellow-500" />
+    },
+    {
+        type: 'WEATHER_AIR_QUALITY',
+        title: 'Calidad del Aire (AQI)',
+        description: 'Partículas (PM2.5) y CO en tiempo real.',
+        icon: <Tornado className="h-5 w-5 text-teal-400" />
+    },
+    {
+        type: 'WEATHER_SPACE_SOLAR',
+        title: 'Viento Solar (Solar Wind)',
+        description: 'Velocidad, densidad y temperatura del viento solar.',
+        icon: <ThermometerSun className="h-5 w-5 text-orange-500" />
+    },
+    {
+        type: 'WEATHER_SPACE_FLARE',
+        title: 'Llamaradas Solares (X-Ray)',
+        description: 'Actividad de rayos X y clasificación de erupciones solares.',
+        icon: <ThermometerSun className="h-5 w-5 text-red-500" />
+    },
+    {
+        type: 'WEATHER_SPACE_KP',
+        title: 'Índice Planetario Kp',
+        description: 'Interacción magnética y tormentas geomagnéticas.',
+        icon: <Activity className="h-5 w-5 text-purple-400" />
+    },
+    {
+        type: 'WEATHER_SPACE_MAGNETOMETER',
+        title: 'Magnetómetro',
+        description: 'Componente H, campo magnético terrestre y simulador 3D.',
+        icon: <Activity className="h-5 w-5 text-blue-400" />
+    },
+    {
+        type: 'WEATHER_SPACE_SCHUMANN',
+        title: 'Espectrograma Schumann',
+        description: 'Frecuencias electromagnéticas terrestres 24h.',
+        icon: <Activity className="h-5 w-5 text-teal-400" />
+    },
+    {
+        type: 'WEATHER_ASTRONOMY',
+        title: 'Astronomía',
+        description: 'Fases lunares e iluminación 3D.',
+        icon: <MoonStar className="h-5 w-5 text-indigo-300" />
+    },
+    {
+        type: 'CULTURAL_FEED',
+        title: 'Ondas de Consciencia',
+        description: 'Feed cultural de arte, expresiones y manifiestos.',
+        icon: <Radio className="h-5 w-5 text-pink-400" />
+    },
+    {
+        type: 'CALCULATOR',
+        title: 'Calculadora Cuántica',
+        description: 'Herramienta computacional estandar.',
+        icon: <Calculator className="h-5 w-5 text-amber-500" />
+    },
+    {
+        type: 'RELEVANT_POSTS',
+        title: 'Publicaciones Destacadas',
+        description: 'Resumen de actividad global, Ontocracia y Nexus.',
+        icon: <FileText className="h-5 w-5 text-purple-400" />
+    },
+    {
+        type: 'MESSAGES',
+        title: 'Transmisiones',
+        description: 'Bandeja de entrada y comunicaciones cifradas.',
+        icon: <MessageSquare className="h-5 w-5 text-indigo-400" />
+    },
+    {
+        type: 'NOTIFICATIONS',
+        title: 'Alertas del Sistema',
+        description: 'Monitoreo sensorial y notificaciones.',
+        icon: <BellRing className="h-5 w-5 text-rose-500" />
     }
 ];
 
@@ -140,6 +260,7 @@ export function AddWidgetDialog({ onAdd, isEditMode }: AddWidgetDialogProps) {
                         <TabsTrigger value="social">Social</TabsTrigger>
                         <TabsTrigger value="productivity">Productividad</TabsTrigger>
                         <TabsTrigger value="system">Sistema</TabsTrigger>
+                        <TabsTrigger value="weather">Climas</TabsTrigger>
                     </TabsList>
 
                     <div className="h-[400px] overflow-y-auto pr-2">
@@ -152,21 +273,28 @@ export function AddWidgetDialog({ onAdd, isEditMode }: AddWidgetDialogProps) {
                         </TabsContent>
                         <TabsContent value="social" className="mt-0">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {AVAILABLE_WIDGETS.filter(w => ['EXPLORE_NETWORK', 'SOCIAL_RADAR', 'MY_PAGES'].includes(w.type)).map((widget) => (
+                                {AVAILABLE_WIDGETS.filter(w => ['EXPLORE_NETWORK', 'SOCIAL_RADAR', 'MY_PAGES', 'CULTURAL_FEED', 'MESSAGES'].includes(w.type)).map((widget) => (
                                     <WidgetStoreItem key={widget.type} widget={widget} onClick={() => handleAdd(widget.type)} />
                                 ))}
                             </div>
                         </TabsContent>
                         <TabsContent value="productivity" className="mt-0">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {AVAILABLE_WIDGETS.filter(w => ['COLLAB_PROJECTS', 'LEARNING_PATH', 'RECENT_ACTIVITY', 'POLITICAL_SUMMARY', 'NEXUS_QUICK_ACCESS'].includes(w.type)).map((widget) => (
+                                {AVAILABLE_WIDGETS.filter(w => ['COLLAB_PROJECTS', 'LEARNING_PATH', 'RECENT_ACTIVITY', 'POLITICAL_SUMMARY', 'NEXUS_QUICK_ACCESS', 'CALCULATOR', 'RELEVANT_POSTS'].includes(w.type)).map((widget) => (
                                     <WidgetStoreItem key={widget.type} widget={widget} onClick={() => handleAdd(widget.type)} />
                                 ))}
                             </div>
                         </TabsContent>
                         <TabsContent value="system" className="mt-0">
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                {AVAILABLE_WIDGETS.filter(w => ['SYSTEM_STATUS', 'LIVE_DATA', 'THEME_SELECTOR', 'WELLNESS'].includes(w.type)).map((widget) => (
+                                {AVAILABLE_WIDGETS.filter(w => ['SYSTEM_STATUS', 'LIVE_DATA', 'THEME_SELECTOR', 'THEME_MANAGER', 'WELLNESS', 'NOTIFICATIONS'].includes(w.type)).map((widget) => (
+                                    <WidgetStoreItem key={widget.type} widget={widget} onClick={() => handleAdd(widget.type)} />
+                                ))}
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="weather" className="mt-0">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                {AVAILABLE_WIDGETS.filter(w => w.type.startsWith('WEATHER')).map((widget) => (
                                     <WidgetStoreItem key={widget.type} widget={widget} onClick={() => handleAdd(widget.type)} />
                                 ))}
                             </div>

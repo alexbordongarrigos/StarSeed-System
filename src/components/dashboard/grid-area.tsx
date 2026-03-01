@@ -8,6 +8,7 @@ import { WidgetRegistry } from "./widget-registry";
 import { createClient } from "@/utils/supabase/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useWidth } from "@/hooks/use-width";
+import { SplineBackground } from "@/components/ui/SplineBackground";
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
 
@@ -20,7 +21,12 @@ const ResponsiveGridLayout = dynamic(
     }),
     {
         ssr: false,
-        loading: () => <div className="h-[500px] w-full flex items-center justify-center text-muted-foreground">Loading Dashboard...</div>
+        loading: () => (
+            <div className="h-[500px] w-full flex flex-col items-center justify-center gap-4 text-muted-foreground">
+                <div className="w-10 h-10 rounded-full border-2 border-primary/30 border-t-primary animate-spin" />
+                <span className="text-sm font-medium opacity-60">Cargando Dashboard...</span>
+            </div>
+        )
     }
 );
 
@@ -60,14 +66,14 @@ export function GridArea({ dashboardId, widgets, setWidgets, isEditMode }: GridA
         });
     }, [widgets]);
 
-    const onLayoutChange = useCallback(async (currentLayout: any[], allLayouts: any) => {
+    const onLayoutChange = useCallback((currentLayout: any[], allLayouts: any) => {
         if (!isEditMode) return;
 
         // Debounce or verify if change is meaningful
         // For now, we update local state but avoid re-triggering the parent unnecessarily if possible
     }, [isEditMode]);
 
-    const handleDragStop = useCallback(async (layout: any[], oldItem: any, newItem: any) => {
+    const handleDragStop = useCallback((layout: any[], oldItem: any, newItem: any) => {
         if (!isEditMode) return;
 
         const updatedWidgets = widgets.map(w => {
@@ -93,9 +99,9 @@ export function GridArea({ dashboardId, widgets, setWidgets, isEditMode }: GridA
         // Persist to DB
         const changedWidget = updatedWidgets.find(w => (w.layout.i || w.id) === newItem.i);
         if (changedWidget) {
-            await supabase.from('dashboard_widgets').update({
+            supabase.from('dashboard_widgets').update({
                 layout: changedWidget.layout
-            }).eq('id', changedWidget.id);
+            }).eq('id', changedWidget.id).then();
         }
     }, [isEditMode, widgets, setWidgets, supabase]);
 
@@ -110,8 +116,28 @@ export function GridArea({ dashboardId, widgets, setWidgets, isEditMode }: GridA
         }
     };
 
+    // Empty state when no widgets
+    if (mounted && widgets.length === 0) {
+        return (
+            <div ref={containerRef} className="relative min-h-[500px] flex flex-col items-center justify-center gap-6 rounded-2xl border border-dashed border-primary/20 bg-primary/[0.02] backdrop-blur-sm">
+                <div className="text-center space-y-3 max-w-xs px-4">
+                    <div className="w-16 h-16 mx-auto rounded-2xl bg-primary/10 flex items-center justify-center text-2xl">
+                        ✦
+                    </div>
+                    <h3 className="text-lg font-bold text-foreground/80">Dashboard Vacío</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                        Activa el modo edición y añade widgets para personalizar tu panel de control.
+                    </p>
+                </div>
+                <div className="flex gap-2 text-[10px] text-muted-foreground/40 uppercase tracking-widest">
+                    <span>★</span><span>StarSeed Network</span><span>★</span>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div ref={containerRef} className={isEditMode ? "border-2 border-dashed border-primary/20 rounded-xl p-4 min-h-[500px]" : "min-h-[500px]"}>
+        <div ref={containerRef} className={isEditMode ? "relative border-2 border-dashed border-primary/20 rounded-xl p-4 min-h-[500px] liquid-glass-panel" : "relative min-h-[500px] liquid-glass-panel"}>
             {mounted && width > 0 && (
                 <ResponsiveGridLayout
                     className="layout"
@@ -120,9 +146,9 @@ export function GridArea({ dashboardId, widgets, setWidgets, isEditMode }: GridA
                     cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
                     rowHeight={60}
                     width={width}
-                    onLayoutChange={onLayoutChange}
-                    onDragStop={handleDragStop}
-                    onResizeStop={handleDragStop}
+                    onLayoutChange={onLayoutChange as any}
+                    onDragStop={handleDragStop as any}
+                    onResizeStop={handleDragStop as any}
                     isDraggable={isEditMode}
                     isResizable={isEditMode}
                     draggableHandle=".drag-handle"
@@ -130,7 +156,7 @@ export function GridArea({ dashboardId, widgets, setWidgets, isEditMode }: GridA
                 >
                     {widgets.map(widget => (
                         <div key={widget.layout.i || widget.id} className="relative group h-full">
-                            <div className={`h-full w-full overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm transition-all ${isEditMode ? 'ring-2 ring-primary/20' : 'hover:shadow-md'}`}>
+                            <div className={`h-full w-full overflow-hidden transition-all bg-transparent rounded-3xl ${isEditMode ? 'ring-2 ring-primary/20' : 'hover:shadow-lg'}`}>
                                 <WidgetRegistry widget={widget} />
 
                                 {isEditMode && (

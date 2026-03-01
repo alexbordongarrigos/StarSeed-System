@@ -29,6 +29,8 @@ import { cn } from '@/lib/utils'; // Assuming this exists, common in shadcn
 // For now, I will simulate the "liquid-glass" and "heavy-glass" classes using standard Tailwind + custom styles in globals.css
 import { SystemMonitor } from "@/components/stitch/SystemMonitor";
 import { NavigationDock } from "@/components/stitch/NavigationDock";
+import { SplineButton } from "@/components/ui/SplineButton";
+import { SplineBackground } from "@/components/ui/SplineBackground";
 
 export default function TrinityInterface() {
     const [activePanel, setActivePanel] = useState<'left' | 'right' | null>(null);
@@ -40,8 +42,12 @@ export default function TrinityInterface() {
 
     return (
         <div className="bg-background-light dark:bg-background-dark text-white font-sans selection:bg-primary/40 h-screen w-screen relative overflow-hidden">
-            {/* Background Nebula Effect */}
+            {/* Background Nebula Effect with Spline integration */}
             <div className="fixed inset-0 pointer-events-none -z-10 opacity-30">
+                <SplineBackground
+                    url="https://prod.spline.design/zJacodBoEMgObolF/scene.splinecode"
+                    className="opacity-50 blur-3xl"
+                />
                 <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-electric-azure/10 blur-[150px] rounded-full"></div>
                 <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[150px] rounded-full"></div>
             </div>
@@ -251,22 +257,34 @@ export default function TrinityInterface() {
 
                     {/* Widget: Quick Actions */}
                     <div className="break-inside-avoid backdrop-blur-md bg-white/5 border border-white/10 rounded-xl p-6 grid grid-cols-2 gap-3">
-                        <button className="flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
-                            <RefreshCw className="text-emerald-green w-6 h-6" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Sync</span>
-                        </button>
-                        <button className="flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
-                            <Rocket className="text-solar-amber w-6 h-6" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Deploy</span>
-                        </button>
-                        <button className="flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
-                            <Zap className="text-electric-azure w-6 h-6" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Overdrive</span>
-                        </button>
-                        <button className="flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
-                            <Shield className="text-primary w-6 h-6" />
-                            <span className="text-[10px] font-bold text-white/60 uppercase">Protect</span>
-                        </button>
+                        <div className="relative group/btn cursor-pointer flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
+                            <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none z-0">
+                                <SplineButton url="https://prod.spline.design/f-FmokKwZQASiVE9/scene.splinecode" />
+                            </div>
+                            <RefreshCw className="text-emerald-green w-6 h-6 z-10" />
+                            <span className="text-[10px] font-bold text-white/60 uppercase z-10">Sync</span>
+                        </div>
+                        <div className="relative group/btn cursor-pointer flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
+                            <div className="absolute inset-0 opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none z-0">
+                                <SplineButton url="https://prod.spline.design/y5WZ2rt1jDFP22YA/scene.splinecode" />
+                            </div>
+                            <Rocket className="text-solar-amber w-6 h-6 z-10" />
+                            <span className="text-[10px] font-bold text-white/60 uppercase z-10">Deploy</span>
+                        </div>
+                        <div className="relative group/btn cursor-pointer flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
+                            <div className="absolute w-[120%] h-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none z-0">
+                                <SplineButton url="https://prod.spline.design/f-FmokKwZQASiVE9/scene.splinecode" />
+                            </div>
+                            <Zap className="text-electric-azure w-6 h-6 z-10" />
+                            <span className="text-[10px] font-bold text-white/60 uppercase z-10">Overdrive</span>
+                        </div>
+                        <div className="relative group/btn cursor-pointer flex flex-col items-center justify-center p-4 bg-white/5 rounded-xl hover:bg-white/10 transition-colors gap-2">
+                            <div className="absolute w-[120%] h-[120%] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover/btn:opacity-100 transition-opacity pointer-events-none z-0">
+                                <SplineButton url="https://prod.spline.design/y5WZ2rt1jDFP22YA/scene.splinecode" />
+                            </div>
+                            <Shield className="text-primary w-6 h-6 z-10" />
+                            <span className="text-[10px] font-bold text-white/60 uppercase z-10">Protect</span>
+                        </div>
                     </div>
 
                     {/* Widget: Node Map */}

@@ -9,6 +9,8 @@ import { Plus, Settings, LayoutGrid, Star, ArrowLeft, ArrowRight, Trash2 } from 
 import { GridArea } from "./grid-area";
 import { useToast } from "@/components/ui/use-toast";
 import { AddWidgetDialog } from "./add-widget-dialog";
+import { WeatherLocationProvider } from "@/modules/weather/context/weather-location-context";
+import { LocationSelector } from "./location-selector";
 
 import { cn } from "@/lib/utils";
 
@@ -23,7 +25,7 @@ export function DashboardLayout() {
     const [loading, setLoading] = useState(true);
     const [isEditMode, setIsEditMode] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(true);
-    const [selectedTemplate, setSelectedTemplate] = useState<"standard" | "analyst" | "creative" | "strategic">("standard");
+    const [selectedTemplate, setSelectedTemplate] = useState<"standard" | "analyst" | "creative" | "strategic" | "climate">("standard");
 
     // Widget Presets
     const TEMPLATE_WIDGETS: Record<string, { type: WidgetType; w: number; h: number; x: number; y: number }[]> = {
@@ -46,6 +48,17 @@ export function DashboardLayout() {
             { type: 'POLITICAL_SUMMARY', w: 5, h: 4, x: 0, y: 0 },
             { type: 'EXPLORE_NETWORK', w: 5, h: 4, x: 5, y: 0 },
             { type: 'RECENT_ACTIVITY', w: 10, h: 3, x: 0, y: 4 }
+        ],
+        climate: [
+            { type: 'WEATHER_SPACE_SOLAR', w: 4, h: 4, x: 0, y: 0 },
+            { type: 'WEATHER_HOLISTIC', w: 4, h: 6, x: 4, y: 0 },
+            { type: 'WEATHER_SPACE_SCHUMANN', w: 4, h: 4, x: 8, y: 0 },
+            { type: 'WEATHER_ASTRONOMY', w: 4, h: 2, x: 0, y: 4 },
+            { type: 'WEATHER_TEMPERATURE', w: 2, h: 2, x: 8, y: 4 },
+            { type: 'WEATHER_WIND', w: 2, h: 2, x: 10, y: 4 },
+            { type: 'WEATHER_AIR_QUALITY', w: 4, h: 2, x: 4, y: 6 },
+            { type: 'WEATHER_HUMIDITY', w: 2, h: 2, x: 8, y: 6 },
+            { type: 'WEATHER_UV', w: 2, h: 2, x: 10, y: 6 }
         ]
     };
 
@@ -138,23 +151,37 @@ export function DashboardLayout() {
     const fetchDashboards = async () => {
         try {
             const { data: { user } } = await supabase.auth.getUser();
+            let profileId = null;
+
             if (!user) {
                 console.warn("No user found in DashboardLayout");
-                setIsAuthenticated(false);
-                return;
-            }
-
-            const profile = await ensureProfile(user);
-
-            if (!profile) {
-                console.error("No profile found for user and failed to create one.");
-                return;
+                if (process.env.NODE_ENV === 'development') {
+                    // Fallback to any available profile for local dev testing
+                    const { data: anyProfile } = await supabase.from('profiles').select('id').limit(1).single();
+                    if (anyProfile) {
+                        profileId = anyProfile.id;
+                        console.log("DEBUG: Using fallback profile for local dev:", profileId);
+                    } else {
+                        setIsAuthenticated(false);
+                        return;
+                    }
+                } else {
+                    setIsAuthenticated(false);
+                    return;
+                }
+            } else {
+                const profile = await ensureProfile(user);
+                if (!profile) {
+                    console.error("No profile found for user and failed to create one.");
+                    return;
+                }
+                profileId = profile.id;
             }
 
             const { data, error } = await supabase
                 .from('dashboards')
                 .select('*')
-                .eq('profile_id', profile.id);
+                .eq('profile_id', profileId);
 
             if (error) {
                 console.error("Error fetching dashboards:", error);
@@ -171,7 +198,7 @@ export function DashboardLayout() {
             } else {
                 // New user with no dashboards? Create a default one
                 if (data?.length === 0) {
-                    await createDefaultDashboard(profile.id);
+                    await createDefaultDashboard(profileId);
                 }
             }
         } catch (error) {
@@ -231,7 +258,11 @@ export function DashboardLayout() {
         if (error) {
             console.error("Error fetching widgets:", error);
         } else {
-            setWidgets(data || []);
+            const mappedWidgets = (data || []).map(w => ({
+                ...w,
+                widget_type: (w.settings as any)?.internal_type || w.widget_type
+            }));
+            setWidgets(mappedWidgets);
         }
         setLoading(false);
     };
@@ -240,11 +271,15 @@ export function DashboardLayout() {
         // Calculate next position (naive approach: place at bottom)
         const y = widgets.length > 0 ? Math.max(...widgets.map(w => w.layout.y + w.layout.h)) : 0;
 
+        const validDbTypes = ["EXPLORE_NETWORK", "MY_PAGES", "POLITICAL_SUMMARY", "LEARNING_PATH", "SOCIAL_RADAR", "WELLNESS", "COLLAB_PROJECTS", "LIVE_DATA"];
+        const dbType = validDbTypes.includes(type) ? type : "EXPLORE_NETWORK";
+        const isCustomType = !validDbTypes.includes(type);
+
         const newWidget = {
             dashboard_id: dashboardId,
-            widget_type: type,
+            widget_type: dbType as any,
             layout: { x: 0, y: y, w: 4, h: 4, i: crypto.randomUUID() }, // Default size, will be adjustable
-            settings: {}
+            settings: isCustomType ? { internal_type: type } : {}
         };
 
         const { data, error } = await supabase
@@ -257,7 +292,11 @@ export function DashboardLayout() {
             console.error("Error adding widget:", error);
             toast({ title: "Error", description: "No se pudo añadir el widget", variant: "destructive" });
         } else if (data) {
-            setWidgets([...widgets, data]);
+            const mappedData = {
+                ...data,
+                widget_type: (data.settings as any)?.internal_type || data.widget_type
+            };
+            setWidgets([...widgets, mappedData as any]);
             toast({ title: "Widget añadido", description: "Personaliza su posición en el modo edición." });
         }
     };
@@ -269,23 +308,35 @@ export function DashboardLayout() {
         try {
             console.log("DEBUG: Creating dashboard", newDashboardName);
             const { data: { user } } = await supabase.auth.getUser();
+            let profileId = null;
+
             if (!user) {
                 console.error("DEBUG: No user found during creation");
-                return;
-            }
-
-            const profile = await ensureProfile(user);
-
-            if (!profile) {
-                console.error("DEBUG: No profile found during creation");
-                toast({ title: "Error", description: "No se encontró el perfil de usuario", variant: "destructive" });
-                return;
+                if (process.env.NODE_ENV === 'development') {
+                    const { data: anyProfile } = await supabase.from('profiles').select('id').limit(1).single();
+                    if (anyProfile) {
+                        profileId = anyProfile.id;
+                    } else {
+                        toast({ title: "Error", description: "No se encontró el perfil de usuario (Dev Fallback)", variant: "destructive" });
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                const profile = await ensureProfile(user);
+                if (!profile) {
+                    console.error("DEBUG: No profile found during creation");
+                    toast({ title: "Error", description: "No se encontró el perfil de usuario", variant: "destructive" });
+                    return;
+                }
+                profileId = profile.id;
             }
 
             const { data: dashboard, error } = await supabase
                 .from('dashboards')
                 .insert({
-                    profile_id: profile.id,
+                    profile_id: profileId,
                     name: newDashboardName,
                     is_default: false
                 })
@@ -297,12 +348,18 @@ export function DashboardLayout() {
                 toast({ title: "Error", description: error.message, variant: "destructive" });
             } else if (dashboard) {
                 console.log("DEBUG: Dashboard created", dashboard);
-                const widgetsToSeed = TEMPLATE_WIDGETS[selectedTemplate].map(w => ({
-                    dashboard_id: dashboard.id,
-                    widget_type: w.type,
-                    layout: { x: w.x, y: w.y, w: w.w, h: w.h },
-                    settings: {}
-                }));
+                const widgetsToSeed = TEMPLATE_WIDGETS[selectedTemplate].map(w => {
+                    const validDbTypes = ["EXPLORE_NETWORK", "MY_PAGES", "POLITICAL_SUMMARY", "LEARNING_PATH", "SOCIAL_RADAR", "WELLNESS", "COLLAB_PROJECTS", "LIVE_DATA"];
+                    const dbType = validDbTypes.includes(w.type) ? w.type : "EXPLORE_NETWORK";
+                    const isCustomType = !validDbTypes.includes(w.type);
+
+                    return {
+                        dashboard_id: dashboard.id,
+                        widget_type: dbType as any,
+                        layout: { x: w.x, y: w.y, w: w.w, h: w.h, i: crypto.randomUUID() },
+                        settings: isCustomType ? { internal_type: w.type } : {}
+                    };
+                });
 
                 const { error: widgetError } = await supabase
                     .from('dashboard_widgets')
@@ -345,11 +402,20 @@ export function DashboardLayout() {
         // Or simpler: set all false, then set one true.
         try {
             const { data: { user } } = await supabase.auth.getUser();
-            const profile = await ensureProfile(user); // Should be cached/fast
+            let profileId = null;
+            if (!user) {
+                if (process.env.NODE_ENV === 'development') {
+                    const { data: anyProfile } = await supabase.from('profiles').select('id').limit(1).single();
+                    if (anyProfile) profileId = anyProfile.id;
+                }
+            } else {
+                const profile = await ensureProfile(user);
+                if (profile) profileId = profile.id;
+            }
 
-            if (!profile) return;
+            if (!profileId) return;
 
-            await supabase.from('dashboards').update({ is_default: false }).eq('profile_id', profile.id);
+            await supabase.from('dashboards').update({ is_default: false }).eq('profile_id', profileId);
             await supabase.from('dashboards').update({ is_default: true }).eq('id', dashboardId);
 
             toast({ title: "Principal actualizado", description: "Dashboard asignado como principal." });
@@ -399,160 +465,163 @@ export function DashboardLayout() {
     // ... render block for loading/auth
 
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex items-center justify-between">
-                <h1 className="text-4xl font-bold font-headline text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 shadow-sm">
-                    Dashboards
-                </h1>
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant={isEditMode ? "secondary" : "ghost"}
-                        size="sm"
-                        onClick={() => setIsEditMode(!isEditMode)}
-                        className={cn("gap-2 transition-all", isEditMode && "bg-white/10 ring-1 ring-primary/50")}
-                    >
-                        <LayoutGrid className="h-4 w-4" />
-                        {isEditMode ? "Terminar Edición" : "Editar"}
-                    </Button>
-                    {/* Settings button removed/kept minimal */}
+        <WeatherLocationProvider>
+            <div className="flex flex-col gap-6">
+                <div className="flex items-center justify-between">
+                    <h1 className="text-4xl font-bold font-headline text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 shadow-sm">
+                        Dashboards
+                    </h1>
+                    <div className="flex items-center gap-2">
+                        <LocationSelector />
+                        <Button
+                            variant={isEditMode ? "secondary" : "ghost"}
+                            size="sm"
+                            onClick={() => setIsEditMode(!isEditMode)}
+                            className={cn("gap-2 transition-all", isEditMode && "bg-white/10 ring-1 ring-primary/50")}
+                        >
+                            <LayoutGrid className="h-4 w-4" />
+                            {isEditMode ? "Terminar Edición" : "Editar"}
+                        </Button>
+                        {/* Settings button removed/kept minimal */}
+                    </div>
                 </div>
-            </div>
 
-            <Tabs
-                value={activeDashboardId || ""}
-                onValueChange={setActiveDashboardId}
-                className="w-full"
-            >
-                <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 min-h-[3rem]">
-                    <TabsList className="bg-background/20 backdrop-blur-md border border-white/10 h-auto p-1 flex items-center gap-1 w-max">
-                        {dashboards.map((d, index) => (
-                            <div key={d.id} className="flex items-center group relative">
-                                <TabsTrigger
-                                    value={d.id}
-                                    className={cn(
-                                        "h-9 gap-2 data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-300 px-4",
-                                        isEditMode && "pr-8" // Make room for controls
+                <Tabs
+                    value={activeDashboardId || ""}
+                    onValueChange={setActiveDashboardId}
+                    className="w-full"
+                >
+                    <div className="flex items-center gap-2 mb-4 overflow-x-auto pb-2 min-h-[3rem]">
+                        <TabsList className="bg-background/20 backdrop-blur-md border border-white/10 h-auto p-1 flex items-center gap-1 w-max">
+                            {dashboards.map((d, index) => (
+                                <div key={d.id} className="flex items-center group relative">
+                                    <TabsTrigger
+                                        value={d.id}
+                                        className={cn(
+                                            "h-9 gap-2 data-[state=active]:bg-primary/20 data-[state=active]:text-primary transition-all duration-300 px-4",
+                                            isEditMode && "pr-8" // Make room for controls
+                                        )}
+                                    >
+                                        {d.name}
+                                        {d.is_default && <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 ml-1" />}
+                                    </TabsTrigger>
+
+                                    {/* Edit Mode Controls Overlay */}
+                                    {isEditMode && (
+                                        <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1 pl-2 bg-black/40 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-10">
+
+                                            {!d.is_default && (
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); handleSetDefault(d.id); }}
+                                                    className="p-1 hover:text-yellow-400 text-muted-foreground transition-colors"
+                                                    title="Hacer Principal"
+                                                >
+                                                    <Star className="w-3 h-3" />
+                                                </button>
+                                            )}
+                                            {index > 0 && !d.is_default && ( // Can't move left if first. If default, active sort forces it first anyway
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); handleMoveDashboard(index, 'left'); }}
+                                                    className="p-1 hover:text-white text-muted-foreground transition-colors"
+                                                >
+                                                    <ArrowLeft className="w-3 h-3" />
+                                                </button>
+                                            )}
+                                            {index < dashboards.length - 1 && !dashboards[index + 1].is_default && ( // Can't move right if next is default (shouldnt happen)
+                                                <button
+                                                    onClick={(e) => { e.stopPropagation(); handleMoveDashboard(index, 'right'); }}
+                                                    className="p-1 hover:text-white text-muted-foreground transition-colors"
+                                                >
+                                                    <ArrowRight className="w-3 h-3" />
+                                                </button>
+                                            )}
+                                            <button
+                                                onClick={(e) => { e.stopPropagation(); handleDeleteDashboard(d.id); }}
+                                                className="p-1 hover:text-red-400 text-muted-foreground transition-colors"
+                                                title="Eliminar"
+                                            >
+                                                <Trash2 className="w-3 h-3" />
+                                            </button>
+                                        </div>
                                     )}
-                                >
-                                    {d.name}
-                                    {d.is_default && <Star className="w-3 h-3 fill-yellow-400 text-yellow-400 ml-1" />}
-                                </TabsTrigger>
+                                </div>
+                            ))}
+                        </TabsList>
 
-                                {/* Edit Mode Controls Overlay */}
-                                {isEditMode && (
-                                    <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-1 pl-2 bg-black/40 rounded-full backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity z-10">
-
-                                        {!d.is_default && (
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleSetDefault(d.id); }}
-                                                className="p-1 hover:text-yellow-400 text-muted-foreground transition-colors"
-                                                title="Hacer Principal"
-                                            >
-                                                <Star className="w-3 h-3" />
-                                            </button>
-                                        )}
-                                        {index > 0 && !d.is_default && ( // Can't move left if first. If default, active sort forces it first anyway
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleMoveDashboard(index, 'left'); }}
-                                                className="p-1 hover:text-white text-muted-foreground transition-colors"
-                                            >
-                                                <ArrowLeft className="w-3 h-3" />
-                                            </button>
-                                        )}
-                                        {index < dashboards.length - 1 && !dashboards[index + 1].is_default && ( // Can't move right if next is default (shouldnt happen)
-                                            <button
-                                                onClick={(e) => { e.stopPropagation(); handleMoveDashboard(index, 'right'); }}
-                                                className="p-1 hover:text-white text-muted-foreground transition-colors"
-                                            >
-                                                <ArrowRight className="w-3 h-3" />
-                                            </button>
-                                        )}
-                                        <button
-                                            onClick={(e) => { e.stopPropagation(); handleDeleteDashboard(d.id); }}
-                                            className="p-1 hover:text-red-400 text-muted-foreground transition-colors"
-                                            title="Eliminar"
-                                        >
-                                            <Trash2 className="w-3 h-3" />
-                                        </button>
+                        <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                            <DialogTrigger asChild>
+                                <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-white/10 border border-dashed border-white/20">
+                                    <Plus className="h-4 w-4" />
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent className="sm:max-w-[425px]">
+                                <DialogHeader>
+                                    <DialogTitle>Crear nuevo dashboard</DialogTitle>
+                                    <DialogDescription>
+                                        Organiza tus widgets en un nuevo espacio.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                <div className="grid gap-4 py-4">
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label htmlFor="name" className="text-right">
+                                            Nombre
+                                        </Label>
+                                        <Input
+                                            id="name"
+                                            value={newDashboardName}
+                                            onChange={(e) => setNewDashboardName(e.target.value)}
+                                            className="col-span-3"
+                                            placeholder="Ej. Finanzas"
+                                        />
                                     </div>
-                                )}
-                            </div>
-                        ))}
-                    </TabsList>
+                                    <div className="grid grid-cols-4 items-center gap-4">
+                                        <Label className="text-right">Plantilla</Label>
+                                        <div className="col-span-3 flex flex-wrap gap-2">
+                                            {['standard', 'analyst', 'creative', 'strategic', 'climate'].map((t) => (
+                                                <Button
+                                                    key={t}
+                                                    variant={selectedTemplate === t ? "default" : "outline"}
+                                                    size="sm"
+                                                    onClick={() => setSelectedTemplate(t as any)}
+                                                    className="capitalize"
+                                                >
+                                                    {t}
+                                                </Button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                <DialogFooter>
+                                    <Button type="submit" onClick={handleCreateDashboard} disabled={isCreating}>
+                                        {isCreating ? "Creando..." : "Crear Dashboard"}
+                                    </Button>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    </div>
 
-                    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
-                        <DialogTrigger asChild>
-                            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8 hover:bg-white/10 border border-dashed border-white/20">
-                                <Plus className="h-4 w-4" />
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent className="sm:max-w-[425px]">
-                            <DialogHeader>
-                                <DialogTitle>Crear nuevo dashboard</DialogTitle>
-                                <DialogDescription>
-                                    Organiza tus widgets en un nuevo espacio.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="grid gap-4 py-4">
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label htmlFor="name" className="text-right">
-                                        Nombre
-                                    </Label>
-                                    <Input
-                                        id="name"
-                                        value={newDashboardName}
-                                        onChange={(e) => setNewDashboardName(e.target.value)}
-                                        className="col-span-3"
-                                        placeholder="Ej. Finanzas"
+                    {dashboards.map(d => (
+                        <TabsContent key={d.id} value={d.id} className="mt-0 space-y-4">
+                            <GridArea
+                                dashboardId={d.id}
+                                widgets={widgets}
+                                setWidgets={setWidgets}
+                                isEditMode={isEditMode}
+                            />
+                            {isEditMode && (
+                                <div className="flex justify-center mt-6 pb-12 opacity-50 hover:opacity-100 transition-opacity">
+                                    <AddWidgetDialog
+                                        isEditMode={isEditMode}
+                                        onAdd={(type) => {
+                                            handleAddWidget(d.id, type);
+                                        }}
                                     />
                                 </div>
-                                <div className="grid grid-cols-4 items-center gap-4">
-                                    <Label className="text-right">Plantilla</Label>
-                                    <div className="col-span-3 flex gap-2">
-                                        {['standard', 'analyst', 'creative', 'strategic'].map((t) => (
-                                            <Button
-                                                key={t}
-                                                variant={selectedTemplate === t ? "default" : "outline"}
-                                                size="sm"
-                                                onClick={() => setSelectedTemplate(t as any)}
-                                                className="capitalize"
-                                            >
-                                                {t}
-                                            </Button>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                            <DialogFooter>
-                                <Button type="submit" onClick={handleCreateDashboard} disabled={isCreating}>
-                                    {isCreating ? "Creando..." : "Crear Dashboard"}
-                                </Button>
-                            </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                </div>
-
-                {dashboards.map(d => (
-                    <TabsContent key={d.id} value={d.id} className="mt-0 space-y-4">
-                        <GridArea
-                            dashboardId={d.id}
-                            widgets={widgets}
-                            setWidgets={setWidgets}
-                            isEditMode={isEditMode}
-                        />
-                        {isEditMode && (
-                            <div className="flex justify-center mt-6 pb-12 opacity-50 hover:opacity-100 transition-opacity">
-                                <AddWidgetDialog
-                                    isEditMode={isEditMode}
-                                    onAdd={(type) => {
-                                        handleAddWidget(d.id, type);
-                                    }}
-                                />
-                            </div>
-                        )}
-                    </TabsContent>
-                ))}
-            </Tabs>
-        </div>
+                            )}
+                        </TabsContent>
+                    ))}
+                </Tabs>
+            </div>
+        </WeatherLocationProvider>
     );
 }

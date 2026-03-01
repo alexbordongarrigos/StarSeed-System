@@ -40,15 +40,15 @@ export interface CanvasState {
         bodyTracking: number;
     };
     components: {
-        buttonStyle: "liquid" | "organic" | "neon" | "brutal" | "glass";
+        buttonStyle: "liquid-crystal" | "liquid" | "organic" | "neon" | "brutal" | "glass" | "solid";
         buttonGlow: boolean;
-        cardPreset: "crystal" | "liquid-action" | "holographic" | "hyper-crystal" | "mesh" | "cyber" | "brutal";
+        cardPreset: "liquid-crystal" | "crystal" | "liquid-action" | "holographic" | "hyper-crystal" | "mesh" | "cyber" | "brutal";
         cardTilt: boolean;
         cardGlowPointer: boolean;
         cardInteractive: boolean;
-        inputBorderStyle: "default" | "glass" | "liquid" | "neon" | "brutal";
+        inputBorderStyle: "liquid-crystal" | "default" | "glass" | "liquid" | "neon" | "brutal";
         inputFloatingLabel: boolean;
-        tooltipStyle: "glass" | "solid" | "minimal";
+        tooltipStyle: "liquid-crystal" | "glass" | "solid" | "minimal";
         badgeStyle: "pill" | "square" | "dot";
         focusRingColor: string;
     };
@@ -179,6 +179,10 @@ export interface CanvasState {
         ashostGraphType: "bar" | "line" | "radar" | "dot";
         ashostColor: string;
         ashostSpeed: number;
+        weatherVariant: "minimal" | "detailed" | "hologram";
+        culturalFeedStyle: "masonry" | "list" | "cards";
+        calculatorTheme: "glass" | "cyber" | "minimal";
+        feedSource: "all" | "ontocracia" | "nexus" | "cultura";
     };
     backgrounds: {
         type: "solid" | "gradient" | "mesh" | "image" | "video";
@@ -217,7 +221,7 @@ export interface CanvasState {
         closeButtonStyle: "x" | "pill" | "icon";
     };
     tabsConfig: {
-        style: "pill" | "underline" | "box" | "ghost";
+        style: "liquid-crystal" | "pill" | "underline" | "box" | "ghost";
         activeColor: string;
         inactiveColor?: string;
         spacing: number;
@@ -250,7 +254,7 @@ export interface CanvasState {
     toasts: {
         position: "top-right" | "top-center" | "bottom-right" | "bottom-center";
         duration: number;
-        style: "glass" | "solid" | "minimal" | "neon" | "cyber" | "blast";
+        style: "liquid-crystal" | "glass" | "solid" | "minimal" | "neon" | "cyber" | "blast";
         lastTrigger: number;
     };
     nav: {
@@ -285,6 +289,14 @@ export interface CanvasState {
         windowPadding: number;
         windowBlur: number;
         showTitleBar: boolean;
+    };
+    splineConfig: {
+        enabled: boolean;
+        primaryOpacity: number;
+        secondaryOpacity: number;
+        animationSpeed: number;
+        interactive: boolean;
+        fallbackColor: string;
     };
     stitchCode: string;
     stitchScreenId: string;
@@ -323,15 +335,15 @@ export const defaultCanvasState: CanvasState = {
         bodyTracking: 0,
     },
     components: {
-        buttonStyle: "glass",
+        buttonStyle: "liquid-crystal",
         buttonGlow: true,
-        cardPreset: "crystal",
+        cardPreset: "liquid-crystal",
         cardTilt: true,
         cardGlowPointer: true,
         cardInteractive: true,
-        inputBorderStyle: "glass",
+        inputBorderStyle: "liquid-crystal",
         inputFloatingLabel: true,
-        tooltipStyle: "glass",
+        tooltipStyle: "liquid-crystal",
         badgeStyle: "pill",
         focusRingColor: "#8B5CF6",
     },
@@ -461,6 +473,10 @@ export const defaultCanvasState: CanvasState = {
         ashostGraphType: "line",
         ashostColor: "#8B5CF6",
         ashostSpeed: 1,
+        weatherVariant: "hologram",
+        culturalFeedStyle: "cards",
+        calculatorTheme: "glass",
+        feedSource: "all",
     },
     backgrounds: {
         type: "gradient",
@@ -497,7 +513,7 @@ export const defaultCanvasState: CanvasState = {
         closeButtonStyle: "x",
     },
     tabsConfig: {
-        style: "pill",
+        style: "liquid-crystal",
         activeColor: "#8B5CF6",
         inactiveColor: "rgba(255,255,255,0.4)",
         spacing: 4,
@@ -530,7 +546,7 @@ export const defaultCanvasState: CanvasState = {
     toasts: {
         position: "bottom-right",
         duration: 4000,
-        style: "glass",
+        style: "liquid-crystal",
         lastTrigger: 0,
     },
     nav: {
@@ -565,6 +581,14 @@ export const defaultCanvasState: CanvasState = {
         windowPadding: 16,
         windowBlur: 20,
         showTitleBar: true,
+    },
+    splineConfig: {
+        enabled: true,
+        primaryOpacity: 0.8,
+        secondaryOpacity: 0.5,
+        animationSpeed: 1.0,
+        interactive: true,
+        fallbackColor: "#050510",
     },
     stitchCode: "",
     stitchScreenId: "",
