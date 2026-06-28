@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { AppHeader } from "@/components/layout/header";
 import { useAppearance } from "@/context/appearance-context";
+import { AuroraWelcomeTourMount } from "@/components/onboarding/aurora-welcome-tour-mount";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { config } = useAppearance();
@@ -18,6 +19,11 @@ export default function AppLayout({ children }: { children: ReactNode }) {
           </div>
         </main>
       </div>
+
+      {/* Guía de bienvenida con Aurora (cliente, SSR-safe vía next/dynamic).
+          Aparece tras el login para usuari@s nuev@s y en variante rápida
+          para invitad@s; saltable y resumible. */}
+      <AuroraWelcomeTourMount />
     </div>
   );
 }
