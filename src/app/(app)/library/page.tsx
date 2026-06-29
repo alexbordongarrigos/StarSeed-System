@@ -42,7 +42,7 @@ import {
 
 type LibraryMode = 'GLOBAL' | 'PERSONAL';
 type ViewMode = 'GRID' | 'LIST';
-type AssetType = 'FILE' | 'FOLDER' | 'LIBRARY' | 'PROGRAM' | 'PAGE' | 'CONCEPT';
+type AssetType = 'FILE' | 'FOLDER' | 'LIBRARY' | 'PROGRAM' | 'PAGE' | 'CONCEPT' | 'RESOURCE';
 
 interface AssetItem {
   id: string;
@@ -56,6 +56,7 @@ interface AssetItem {
   mode: LibraryMode; // Belongs to Global or Personal
   aiTags: string[];
   author?: string; // For Global items
+  license?: string; // For open/free resources folded in from the former store (all free)
 }
 
 // --- Mock Data ---
@@ -65,6 +66,15 @@ const mockAssets: AssetItem[] = [
   { id: "lib1", parentId: null, name: "Ciencia & Tecnología", type: "LIBRARY", size: "128 TB", modified: "2024-03-20", mode: "GLOBAL", aiTags: ["science", "tech"] },
   { id: "lib2", parentId: null, name: "Artes & Cultura", type: "LIBRARY", size: "450 TB", modified: "2024-03-18", mode: "GLOBAL", aiTags: ["art", "culture"] },
   { id: "lib3", parentId: null, name: "Gobernanza & Leyes", type: "LIBRARY", size: "12 TB", modified: "2024-03-15", mode: "GLOBAL", aiTags: ["governance", "law"] },
+  // Open, free resources folded in from the former "Tienda"/Store. There is NO store: everything here is FREE & open.
+  { id: "lib_open", parentId: null, name: "Recursos Abiertos", type: "LIBRARY", size: "Economía del Regalo · Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["open-source", "free", "gift-economy"], author: "Comunidad StarSeed" },
+
+  // Inside "Recursos Abiertos" (formerly the Store / Intercambio de Recursos — all FREE)
+  { id: "res_1", parentId: "lib_open", name: "Pack de Shaders Cuánticos", type: "RESOURCE", subType: "ASSET_3D", size: "Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["shaders", "webgl", "free"], author: "NeoGraphics Collective", license: "MIT" },
+  { id: "res_2", parentId: "lib_open", name: "Blueprint: Domo Geodésico", type: "RESOURCE", subType: "BLUEPRINT", size: "Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["architecture", "eco", "free"], author: "Arquitectura Viva", license: "CC BY-SA" },
+  { id: "res_3", parentId: "lib_open", name: "Avatar Rig: Cyber-Monje", type: "RESOURCE", subType: "AVATAR", size: "Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["avatar", "rig", "free"], author: "Digital Soul", license: "StarSeed Public" },
+  { id: "res_4", parentId: "lib_open", name: "Dataset: Patrones Climáticos", type: "RESOURCE", subType: "DATASET", size: "Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["data", "climate", "free"], author: "Observatorio Valle Central", license: "Public Domain" },
+  { id: "res_5", parentId: "lib_open", name: "Kit de IA Ética", type: "RESOURCE", subType: "KNOWLEDGE", size: "Libre", modified: "Ahora", mode: "GLOBAL", aiTags: ["ai", "ethics", "free"], author: "Consejo de Sabios", license: "Open Source" },
 
   // Inside "Ciencia & Tecnología"
   { id: "g_c_1", parentId: "lib1", name: "StarSeed Core v1.0", type: "PROGRAM", subType: "SYSTEM", size: "2.4 GB", modified: "2024-03-20", mode: "GLOBAL", aiTags: ["kernel", "os"], author: "Core Team" },
@@ -155,6 +165,7 @@ function LibraryContent() {
       case 'PROGRAM': return <Cpu className="w-10 h-10 text-emerald-400/80" />;
       case 'CONCEPT': return <Lightbulb className="w-10 h-10 text-purple-400/80" />;
       case 'PAGE': return <Globe className="w-10 h-10 text-blue-300/80" />;
+      case 'RESOURCE': return <Share2 className="w-10 h-10 text-emerald-300/90" />;
       default: return <FileIcon className="w-10 h-10 text-cyan-200/80" />;
     }
   };
@@ -165,12 +176,12 @@ function LibraryContent() {
       <div className="flex flex-col md:flex-row items-end justify-between gap-6">
         <div className="flex flex-col gap-1">
           <h1 className="text-4xl font-bold font-headline text-primary bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
-            {mode === 'GLOBAL' ? "Librería Global" : "Mi Biblioteca"}
+            Documentos
           </h1>
           <p className="text-muted-foreground text-sm max-w-md">
             {mode === 'GLOBAL'
-              ? "Accede al conocimiento y recursos compartidos por toda la red StarSeed."
-              : "Tu espacio personal seguro para archivos, ideas y proyectos."}
+              ? "Librería Global · Conocimiento y recursos abiertos y libres, compartidos por toda la red StarSeed."
+              : "Mi Biblioteca · Tu espacio personal seguro para archivos, ideas y proyectos."}
           </p>
         </div>
 
@@ -246,7 +257,7 @@ function LibraryContent() {
           <div className="flex items-center gap-2 w-full md:w-auto">
             {mode === 'GLOBAL' ? (
               <Button className="bg-indigo-600 hover:bg-indigo-500 text-white gap-2 shadow-lg shadow-indigo-500/20">
-                <Upload className="w-4 h-4" /> Subir a la Red
+                <Upload className="w-4 h-4" /> Compartir Libremente
               </Button>
             ) : (
               <>
@@ -319,7 +330,9 @@ function LibraryContent() {
                     <p className="text-[10px] text-muted-foreground flex gap-2">
                       {asset.type === 'LIBRARY' || asset.type === 'FOLDER'
                         ? <span>{asset.size}</span>
-                        : <span>{asset.type} • {asset.size}</span>
+                        : asset.type === 'RESOURCE'
+                          ? <span className="text-emerald-300/80">Libre{asset.license ? ` • ${asset.license}` : ''}</span>
+                          : <span>{asset.type} • {asset.size}</span>
                       }
                     </p>
                   </div>
@@ -393,7 +406,7 @@ function LibraryContent() {
 
 export default function LibraryPage() {
   return (
-    <Suspense fallback={<div className="flex items-center justify-center h-screen text-muted-foreground">Cargando librería...</div>}>
+    <Suspense fallback={<div className="flex items-center justify-center h-screen text-muted-foreground">Cargando Documentos...</div>}>
       <LibraryContent />
     </Suspense>
   );
