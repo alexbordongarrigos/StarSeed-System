@@ -14,7 +14,8 @@ import {
     Search, Briefcase, Vote, Users, BookOpen, Calendar,
     Globe, MapPin, PartyPopper, Clock, Zap, CheckCircle2,
     AlertTriangle, Star, ChevronRight, Plus, Filter,
-    Activity, Award, Shield, Flame
+    Activity, Award, Shield, Flame,
+    Scale, Gavel
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -38,6 +39,45 @@ const voteManagement = [
     { proposal: "Ley de Soberanía de Datos Personales", ef: "E.F. Valle Central", deadline: "3 días", voted: false, urgency: "Urgente" },
     { proposal: "Protocolo de Energía Renovable Comunitaria", ef: "E.F. Norte Verde", deadline: "12 días", voted: true, urgency: "Alta" },
     { proposal: "Currículo Abierto de Educación Universal", ef: "Consejo Global", deadline: "21 días", voted: false, urgency: "Media" },
+];
+
+// Decisiones — accesos directos a las funciones de toma de decisiones
+// (gobernanza Legislativa / Ejecutiva / Judicial). Reemplaza el antiguo
+// botón flotante inferior-izquierdo "Decisiones", exponiéndolo aquí dentro
+// del Hub de Conexiones. Cada área enlaza a la funcionalidad real existente.
+const decisiones = [
+    {
+        area: "Legislativo",
+        title: "Propuestas y Votaciones",
+        description: "Revisa, debate y vota las propuestas de ley activas en tus Entidades Federativas.",
+        href: "/network/politics",
+        icon: <Vote className="w-5 h-5 text-primary" />,
+        accent: "text-primary bg-primary/10 border-primary/20",
+    },
+    {
+        area: "Ejecutivo",
+        title: "Tablero de Proyectos",
+        description: "Coordina y da seguimiento a los proyectos ejecutivos de la comunidad.",
+        href: "/network/politics",
+        icon: <Briefcase className="w-5 h-5 text-emerald-400" />,
+        accent: "text-emerald-400 bg-emerald-400/10 border-emerald-400/20",
+    },
+    {
+        area: "Judicial",
+        title: "Justicia Restaurativa",
+        description: "Consulta casos en mediación y participa en la resolución comunitaria de disputas.",
+        href: "/network/politics",
+        icon: <Scale className="w-5 h-5 text-amber-400" />,
+        accent: "text-amber-400 bg-amber-400/10 border-amber-400/20",
+    },
+    {
+        area: "Constitución",
+        title: "Métodos de Toma de Decisiones",
+        description: "Repasa el marco y los métodos de decisión colectiva definidos en la Constitución.",
+        href: "/info/constitution",
+        icon: <Gavel className="w-5 h-5 text-cyan-400" />,
+        accent: "text-cyan-400 bg-cyan-400/10 border-cyan-400/20",
+    },
 ];
 
 const alliances = [
@@ -128,13 +168,14 @@ export default function HubPage() {
             </div >
 
             <Tabs defaultValue="participations">
-                <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 max-w-[clamp(20rem,80vw,56rem)] mx-auto">
+                <TabsList className="grid w-full grid-cols-3 md:grid-cols-7 max-w-[clamp(20rem,80vw,56rem)] mx-auto">
                     <TabsTrigger value="participations"><CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />Participaciones</TabsTrigger>
                     <TabsTrigger value="my-pages"><Globe className="w-3.5 h-3.5 mr-1.5" />Mis Páginas</TabsTrigger>
                     <TabsTrigger value="groups"><Users className="w-3.5 h-3.5 mr-1.5" />Grupos</TabsTrigger>
                     <TabsTrigger value="events"><Calendar className="w-3.5 h-3.5 mr-1.5" />Eventos</TabsTrigger>
                     <TabsTrigger value="parties"><Flame className="w-3.5 h-3.5 mr-1.5" />Partidos</TabsTrigger>
                     <TabsTrigger value="vote-management"><Vote className="w-3.5 h-3.5 mr-1.5" />Votos</TabsTrigger>
+                    <TabsTrigger value="decisiones"><Gavel className="w-3.5 h-3.5 mr-1.5" />Decisiones</TabsTrigger>
                 </TabsList>
 
                 {/* ── PARTICIPACIONES ── */}
@@ -396,6 +437,31 @@ export default function HubPage() {
                                     </div>
                                 </CardContent>
                             </Card>
+                        ))}
+                    </div>
+                </TabsContent>
+
+                {/* ── DECISIONES ── */}
+                <TabsContent value="decisiones" className="mt-6 animate-in fade-in-50 duration-500">
+                    <p className="text-sm font-medium text-muted-foreground mb-6 max-w-2xl px-1">
+                        Centro de toma de decisiones: accede a las funciones de gobernanza Legislativa,
+                        Ejecutiva y Judicial de la red, antes disponibles desde el botón flotante.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {decisiones.map((item, i) => (
+                            <Link key={i} href={item.href}>
+                                <Card className="group liquid-glass-panel shadow-lg hover:border-primary/40 transition-all duration-300 h-full p-2">
+                                    <CardContent className="p-4 flex items-start gap-4">
+                                        <div className={cn("p-3 rounded-2xl border", item.accent)}>{item.icon}</div>
+                                        <div className="flex-1 min-w-0">
+                                            <span className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground">{item.area}</span>
+                                            <p className="font-semibold text-foreground mt-0.5 group-hover:text-primary transition-colors">{item.title}</p>
+                                            <p className="text-sm text-muted-foreground mt-1">{item.description}</p>
+                                        </div>
+                                        <ChevronRight className="w-5 h-5 text-muted-foreground self-center opacity-0 group-hover:opacity-100 transition-all" />
+                                    </CardContent>
+                                </Card>
+                            </Link>
                         ))}
                     </div>
                 </TabsContent>
