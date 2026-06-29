@@ -66,7 +66,7 @@ const initialAgents: Agent[] = [
     description: "Asistente central del sistema operativo.",
     systemPrompt: "Eres el núcleo operativo de StarSeed...",
     temperature: 0.7,
-    capabilities: ["search", "code", "file_system"]
+    capabilities: ["search", "code", "file_system", "library_global", "library_personal"]
   },
   {
     id: "2",
@@ -74,7 +74,7 @@ const initialAgents: Agent[] = [
     description: "Generador de arte y conceptos abstractos.",
     systemPrompt: "Eres una musa inspiradora...",
     temperature: 1.2,
-    capabilities: ["image_gen", "poetry"]
+    capabilities: ["image_gen", "poetry", "library_global", "library_personal"]
   }
 ];
 
@@ -85,7 +85,7 @@ const initialRules: Rule[] = [
 
 const initialWorkflows: WorkflowItem[] = [
   { id: "w1", name: "Resumen Diario", trigger: "Every 24h", action: "Summarize /News -> Send to Inbox", isActive: true },
-  { id: "w2", name: "Auto-Tag Library", trigger: "On File Upload", action: "Analyze Content -> Add AI Tags", isActive: false },
+  { id: "w2", name: "Auto-Tag Documentos", trigger: "On File Upload (Librería Global + Mi Biblioteca)", action: "Analyze Content -> Add AI Tags", isActive: true },
 ];
 
 export default function AgentPage() {
@@ -297,6 +297,13 @@ export default function AgentPage() {
               <CardDescription>Sets de conocimiento cargados dinámicamente.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
+              <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex justify-between items-center">
+                <div>
+                  <p className="font-bold text-sm text-emerald-300">Documentos (Librería Global + Mi Biblioteca)</p>
+                  <p className="text-xs text-emerald-400/70">Aurora y Astro pueden leer, listar e invocar archivos de la librería abierta y de la biblioteca personal.</p>
+                </div>
+                <Badge className="bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500/30">Activo</Badge>
+              </div>
               <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/20 flex justify-between items-center">
                 <div>
                   <p className="font-bold text-sm text-purple-300">Modo Desarrollo</p>
