@@ -3,6 +3,10 @@ import path from 'path';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  // Hide the Next.js dev/build indicator badge (defaults to the bottom-left
+  // corner). This removes the small build/version overlay shown there while
+  // still allowing Next.js to surface build and runtime errors.
+  devIndicators: false,
   transpilePackages: ['@splinetool/react-spline'],
   typescript: {
     ignoreBuildErrors: true,
